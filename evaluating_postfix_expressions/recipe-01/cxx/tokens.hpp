@@ -17,6 +17,9 @@ public:
         FIRST_OP = 5,       // first operator code
     };
 
+    Token() {
+    }
+
     Token(int value) {
         _type = Token::INT;
         _value.i = value;
@@ -71,17 +74,35 @@ public:
     }
 
 private:
-    int _type;
+    int _type{};
     union value_union {
         int i;
         char c;
-    } _value;
+    } _value{};
 };
 
 namespace std {
 
-std::string to_string(const ::Token& t) {
+inline std::string to_string(const ::Token& t) {
     return t.toString();
 }
 
 }   // namespace std
+
+inline bool operator== (const Token& lhs, const Token& rhs) {
+    return lhs.getType() == lhs.getType() && lhs.getValue() == rhs.getValue();
+}
+
+inline bool operator!= (const Token& lhs, const Token& rhs) {
+    return !(lhs == rhs);
+}
+
+inline bool operator< (const Token& lhs, const Token& rhs) {
+    if (lhs.getType() < rhs.getType()) {
+        return true;
+    } else if (lhs.getType() == rhs.getType()) {
+        return lhs.getValue() < rhs.getValue();
+    } else {
+        return false;
+    }
+}

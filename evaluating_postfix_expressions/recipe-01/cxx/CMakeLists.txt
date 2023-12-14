@@ -8,3 +8,10 @@ add_executable(tokens_test
     tokens.hpp
     print.hpp
     tokens_test.cpp)
+
+add_executable(scanner_test 
+    tokens.hpp
+    scanner.hpp
+    print.hpp
+    input.hpp
+    scanner_test.cpp)
