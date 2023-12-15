@@ -15,3 +15,11 @@ add_executable(scanner_test
     print.hpp
     input.hpp
     scanner_test.cpp)
+
+add_executable(evaluatorapp 
+    tokens.hpp
+    scanner.hpp
+    model.hpp
+    print.hpp
+    input.hpp
+    evaluatorapp.cpp)

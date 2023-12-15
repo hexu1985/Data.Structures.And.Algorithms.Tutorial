@@ -20,12 +20,12 @@ public:
     Token() {
     }
 
-    Token(int value) {
+    explicit Token(int value) {
         _type = Token::INT;
         _value.i = value;
     }
 
-    Token(char ch) {
+    explicit Token(char ch) {
         _type = makeType(ch);
         _value.c = ch;
     }

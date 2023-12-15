@@ -2,22 +2,38 @@
 
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
-namespace std {
-
-inline std::string to_string(std::string str) {
-    return std::move(str);
+inline void printHelper(const char* str) {
+    std::cout << str;
 }
 
-}   // namespace std
+inline void printHelper(const std::string& str) {
+    std::cout << str;
+}
+
+inline void printHelper(std::string&& str) {
+    std::cout << str;
+}
+
+inline void printHelper(const std::exception& e) {
+    std::cout << e.what(); 
+}
 
 template <typename T>
-void print(T value) {
-    std::cout << std::to_string(value) << '\n';
+void printHelper(T&& value) {
+    std::cout << std::to_string(std::forward<T>(value)); 
 }
 
 template <typename T, typename... Args>
-void print(T value, Args... args) {
-    std::cout << std::to_string(value) << ' ';
-    print(args...);
+void printHelper(T&& value, Args&&... args) {
+    printHelper(std::forward<T>(value));
+    printHelper(" ");
+    printHelper(std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+void print(Args&&... args) {
+    printHelper(std::forward<Args>(args)...);
+    printHelper("\n");
 }

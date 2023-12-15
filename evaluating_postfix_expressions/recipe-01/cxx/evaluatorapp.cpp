@@ -7,7 +7,7 @@ public:
     void run() {
         PFEvaluatorModel evaluator;
         while (true) {
-            auto sourceStr = input("Enter an expression: ");
+            auto sourceStr = input("Enter a postfix expression: ");
             if (sourceStr == "") break;
             try 
             {
@@ -16,7 +16,7 @@ public:
             } 
             catch (const std::exception& e)
             {
-                print(e.what(), evaluator.evaluationStatus());
+                print(e, evaluator.evaluationStatus());
             }
         }
     }
