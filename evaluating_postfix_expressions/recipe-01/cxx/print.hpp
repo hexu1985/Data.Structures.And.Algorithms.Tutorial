@@ -1,6 +1,15 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+
+namespace std {
+
+inline std::string to_string(std::string str) {
+    return std::move(str);
+}
+
+}   // namespace std
 
 template <typename T>
 void print(T value) {

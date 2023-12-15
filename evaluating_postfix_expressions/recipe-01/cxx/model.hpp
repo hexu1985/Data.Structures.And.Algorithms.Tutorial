@@ -7,15 +7,36 @@
 #include <stack>
 #include <stdexcept>
 #include <memory>
+#include <list>
+
+namespace std {
+
+inline std::string to_string(const std::stack<Token>& operandStack) {
+    std::stack<Token> tempStack(operandStack);
+    std::list<Token> operandList;
+    while (!tempStack.empty()) {
+        operandList.push_back(tempStack.top());
+        tempStack.pop();
+    }
+    operandList.reverse();
+    std::string result = "";
+    for (const auto& token : operandList) {
+        result += std::to_string(token);
+        result += ' ';
+    }
+    return result;
+}
+
+}    // namespace std
 
 class PFEvaluator {
 public:
     PFEvaluator(Scanner&& scanner_): scanner(std::move(scanner_)) {
     }
 
-    void evaluate() {
+    int evaluate() {
         while (scanner.hasNext()) {
-            currentToken = scanner.next();
+            auto currentToken = scanner.next();
             expressionSoFar += std::to_string(currentToken) + " ";
             if (currentToken.getType() == Token::INT) {
                 operandStack.push(currentToken);
@@ -36,7 +57,7 @@ public:
         if (operandStack.size() > 1) {
             throw std::logic_error("Too many operands on the stack");
         }
-        auto result = operandStack.pop();
+        auto result = operandStack.top(); operandStack.pop();
         return result.getValue();
     }
 
@@ -46,13 +67,13 @@ public:
             result += "Portion of expression processed: none\n";
         } else {
             result += "Portion of expression processed: " + \
-                   self.expressionSoFar + "\n";
+                   expressionSoFar + "\n";
         }
         if (operandStack.empty()) {
             result += "The stack is empty";
         } else {
             result += "Operands on the stack          : " + \
-                      std::to_string(self.operandStack);
+                      std::to_string(operandStack);
         }
         return result;
     }
@@ -97,7 +118,7 @@ class PFEvaluatorModel {
 public:
     int evaluate(const std::string& sourceStr) {
         evaluator.reset(new PFEvaluator(Scanner(sourceStr)));
-        value = evaluator->evaluate();
+        auto value = evaluator->evaluate();
         return value;
     }
 

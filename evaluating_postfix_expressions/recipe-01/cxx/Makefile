@@ -4,7 +4,7 @@ INCLUDES =
 LDFLAGS = 
 LDLIBS = 
 
-PROGS =	tokens_test scanner_test
+PROGS =	tokens_test scanner_test evaluatorapp
 
 .PHONY: all
 all: $(PROGS)
@@ -19,4 +19,7 @@ tokens_test: tokens_test.cpp print.hpp tokens.hpp
 
 scanner_test: scanner_test.cpp print.hpp scanner.hpp
 	$(CXX) -o $@ scanner_test.cpp $(CXXFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS)
+
+evaluatorapp: evaluatorapp.cpp print.hpp scanner.hpp
+	$(CXX) -o $@ evaluatorapp.cpp $(CXXFLAGS) $(INCLUDES) $(LDFLAGS) $(LDLIBS)
 
