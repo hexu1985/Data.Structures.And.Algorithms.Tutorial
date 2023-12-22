@@ -4,7 +4,7 @@ INCLUDES =
 LDFLAGS = 
 LDLIBS = 
 
-PROGS =	tokens_test scanner_test #evaluatorapp
+PROGS =	tokens_test scanner_test evaluatorapp
 
 .PHONY: all
 all: $(PROGS)
