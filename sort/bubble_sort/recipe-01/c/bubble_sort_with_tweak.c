@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "sort_helper.h"
 #include <stdbool.h>
 
 void swap(int* lyst, int i, int j) {
@@ -24,22 +23,6 @@ void bubble_sort_with_tweak(int* lyst, int n) {
         if (!swapped) return;
         n -= 1;
     }
-}
-
-void print(int* lyst, int n) {
-    printf("[ ");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", lyst[i]);
-    }
-    printf("]\n");
-}
-
-int* range(int n) {
-    int* arr = malloc(n*sizeof(int));
-    for (int i = 0; i < n; i++) {
-        arr[i] = i;
-    }
-    return arr;
 }
 
 int main() {
