@@ -2,6 +2,7 @@
 
 #include <string>
 #include <variant>
+#include "bignumber.h"
 
 class Token {
 public:
@@ -22,7 +23,7 @@ public:
     Token() {
     }
 
-    explicit Token(int i) {
+    explicit Token(const BigNumber& i) {
         type = Token::INT;
         value = i;
     }
@@ -43,7 +44,7 @@ public:
     std::string toString() const {
         struct {
             std::string str;
-            void operator()(int i) { str = std::to_string(i); }
+            void operator()(const BigNumber& i) { str = i.getString(); }
             void operator()(const std::string& s) { str = s; }
         } visitor;
 
@@ -55,7 +56,7 @@ public:
         return type;
     }
 
-    const std::variant<int, std::string>& getValue() const {
+    const std::variant<std::string, BigNumber>& getValue() const {
         return value;
     }
 
@@ -77,7 +78,7 @@ public:
 
 private:
     int type{};
-    std::variant<int, std::string> value{};
+    std::variant<std::string, BigNumber> value{};
 };
 
 namespace std {
