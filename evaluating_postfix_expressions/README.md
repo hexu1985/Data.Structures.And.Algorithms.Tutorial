@@ -5,6 +5,7 @@
 - [Python版本](recipe-01/python)
 - [C++ UNION版本](recipe-01/cxx)
 - [C++ std::variant版本](recipe-01/cxx-variant)
+- [C++ BigNumber版本](recipe-01/cxx-bignumber)
 
 ### [版本二：基于版本一增加乘方运算符支持](recipe-02)
 
