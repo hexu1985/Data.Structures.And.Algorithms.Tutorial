@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <memory>
 #include <list>
+#include <cmath>
 
 namespace std {
 
@@ -93,6 +94,9 @@ public:
                 break;
             case Token::DIV:
                 result = value1 / value2;
+                break;
+            case Token::EXPO:
+                result = pow(value1, value2);
                 break;
             default:
                 throw std::runtime_error("Unknown operator");

@@ -6,7 +6,7 @@
 - [C++ UNION版本](recipe-01/cxx)
 - [C++ std::variant版本](recipe-01/cxx-variant)
 
-### [版本二：增加乘方运算符支持](recipe-02)
+### [版本二：基于版本一增加乘方运算符支持](recipe-02)
 
 - [Python版本](recipe-02/python)
 - [C++ UNION版本](recipe-02/cxx)
