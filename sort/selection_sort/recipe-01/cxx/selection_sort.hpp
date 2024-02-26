@@ -1,5 +1,4 @@
-#include <vector>
-#include "sort_helper.hpp"
+#pragma once
 
 template <typename Container>
 void swap(Container& lyst, int i, int j) {
@@ -26,15 +25,5 @@ void selection_sort(Container& lyst) {
         }
         i += 1;
     }
-}
-
-int main() {
-    std::vector<int> lyst = {2, 4, 3, 0, 1, 5};
-    selection_sort(lyst);
-    print(lyst);
-
-    range(lyst, 6);
-    selection_sort(lyst);
-    print(lyst);
 }
 
