@@ -63,3 +63,74 @@ Partition总是选择一个$p = A[r]$作为**枢纽元**（pivot），并围绕�
 
 ![partition3](partition3.png)
 
+### 快速排序算法的Python实现
+
+基于快速排序算法的伪码，我们可以轻松的给出Python版本的实现。
+
+首先是给出测试驱动代码：
+
+test_quicksort.py
+```py
+#!/usr/bin/env python3
+# test_quicksort.py
+
+from quicksort import quicksort
+import random
+
+def main(size = 1000):
+    lyst = []
+    for count in range(size):
+        lyst.append(random.randint(1, size + 1))
+
+    answer = sorted(lyst)
+    print(lyst)
+    quicksort(lyst)
+    print(lyst)
+
+    if answer == lyst:
+        print("quicksort is correct!")
+    else:
+        print("quicksort is not correct!")
+
+if __name__ == "__main__":
+    main() 
+```
+
+然后是quicksort的实现代码：
+
+quicksort.py
+```py
+#!/usr/bin/env python3
+# quicksort.py
+
+def quicksort(lyst):
+    quicksortHelper(lyst, 0, len(lyst) - 1)
+
+def quicksortHelper(lyst, left, right):
+    if left >= right:
+        return
+    pivotLocation = partition(lyst, left, right)
+    quicksortHelper(lyst, left, pivotLocation - 1)
+    quicksortHelper(lyst, pivotLocation + 1, right)
+
+def partition(lyst, left, right):
+    pivot = lyst[right]
+    i = left - 1
+    for j in range(left, right):    # left to right - 1
+        if lyst[j] <= pivot:
+            i = i + 1
+            swap(lyst, i, j)
+    swap(lyst, i + 1, right)
+    return i + 1
+
+def swap(lyst, i, j):
+    """Exchanges the items at positions i and j."""
+    # You could say lyst[i], lyst[j] = lyst[j], lyst[i]
+    # but the following code shows what is really going on
+    temp = lyst[i]
+    lyst[i] = lyst[j]
+    lyst[j] = temp
+```
+
+### 快速排序算法的优化
+
