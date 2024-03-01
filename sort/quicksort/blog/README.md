@@ -378,6 +378,13 @@ def insertionSort(lyst, left, right):
 
 至此，我们就用Python实现了一个相对完整快速排序算法。
 
+最后给出所有实现的工程代码路径：
+- [《算法导论》第7章原始版本](https://github.com/hexu1985/Data.Structures.And.Algorithms.Tutorial/tree/master/sort/quicksort/blog/recipe-01) 
+- [《算法导论》第7章Hoare partition版本，书中伪码有问题，已修正](https://github.com/hexu1985/Data.Structures.And.Algorithms.Tutorial/tree/master/sort/quicksort/blog/recipe-02)
+- [Hoare partition版本，枢纽元选成最右侧元素](https://github.com/hexu1985/Data.Structures.And.Algorithms.Tutorial/tree/master/sort/quicksort/blog/recipe-03)
+- [Hoare partition版本，枢纽元选成最右侧元素，小于等于10个元素的子数组用插入排序](https://github.com/hexu1985/Data.Structures.And.Algorithms.Tutorial/tree/master/sort/quicksort/blog/recipe-04)
+- [Hoare partition版本，枢纽元选成最右侧元素，小于等于10个元素的子数组用插入排序，Pivot选择采用Median-of-Three方法](https://github.com/hexu1985/Data.Structures.And.Algorithms.Tutorial/tree/master/sort/quicksort/blog/recipe-05)
+
 ### 参考文档：
 
 - 《算法导论（原书第3版）》
