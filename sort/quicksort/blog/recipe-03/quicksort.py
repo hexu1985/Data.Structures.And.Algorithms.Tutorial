@@ -16,12 +16,12 @@ def partition(lyst, left, right):
     j = right
     while True:
         while True:
-            j = j - 1
-            if j <= left or lyst[j] <= pivot:
-                break
-        while True:
             i = i + 1
             if lyst[i] >= pivot:
+                break
+        while True:
+            j = j - 1
+            if j <= left or lyst[j] <= pivot:
                 break
         if i < j:
             swap(lyst, i, j)
