@@ -4,8 +4,8 @@ def quicksort(lyst):
     quicksortHelper(lyst, 0, len(lyst) - 1)
 
 def quicksortHelper(lyst, left, right):
-    if left >= right:
-        return
+    if right - left <= 10:
+        return insertionSort(lyst, left, right)
     pivotLocation = partition(lyst, left, right)
     quicksortHelper(lyst, left, pivotLocation - 1)
     quicksortHelper(lyst, pivotLocation + 1, right)
@@ -37,4 +37,18 @@ def swap(lyst, i, j):
     temp = lyst[i]
     lyst[i] = lyst[j]
     lyst[j] = temp
+
+def insertionSort(lyst, left, right):
+    i = left + 1
+    while i <= right:
+        itemToInsert = lyst[i]
+        j = i - 1
+        while j >= 0:
+            if itemToInsert < lyst[j]:
+                lyst[j + 1] = lyst[j]
+                j -= 1
+            else:
+                break
+        lyst[j + 1] = itemToInsert
+        i += 1
 

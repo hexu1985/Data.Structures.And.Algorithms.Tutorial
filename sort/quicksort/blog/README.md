@@ -139,21 +139,87 @@ def swap(lyst, i, j):
 **STEP1**
 
 首先我们把Partition过程修改成最早由C.A.R.Hoare提出时的模样，
-当然这里的伪码可能与最原始的版本有所调整。先给出我的伪码：
+当然这里的伪码可能与最原始Hoare版本有所出入：
 
 > Hoare-Partition(A, l, r)
->  1 p = A[l]
->  2 i = l - 1
->  3 j = r + 1
->  4 while TRUE
->  5    repeat
->  6        j = j - 1
->  7    until A[j] <= p
->  8    repeat
->  9        i = i + 1
-> 10    until A[i] >= p
+> 1  p = A[r]
+> 2  i = l - 1
+> 3  j = r
+> 4  while TRUE
+> 5     repeat
+> 6         i = i + 1
+> 7     until A[i] >= p
+> 8     repeat
+> 9         j = j - 1
+> 10    until j == l or A[j] <= p
 > 11    if i < j
 > 12        exchange A[i] with A[j]
-> 13    else return j
+> 13    else 
+> 14        break
+> 15 exchange A[i] with A[r]
+> 16 return i
 
+下图显示了Hoare-Partition如何在一个包含10个元素的数组上进行操作的过程。
 
+![hoare partition](hoare-partition.png)
+
+更新了Partition过程的完整代码如下：
+
+quicksort.py
+```py
+#!/usr/bin/env python3
+# quicksort.py
+
+def quicksort(lyst):
+    quicksortHelper(lyst, 0, len(lyst) - 1)
+
+def quicksortHelper(lyst, left, right):
+    if left >= right:
+        return
+    pivotLocation = partition(lyst, left, right)
+    quicksortHelper(lyst, left, pivotLocation - 1)
+    quicksortHelper(lyst, pivotLocation + 1, right)
+
+def partition(lyst, left, right):
+    pivot = lyst[right]
+    i = left - 1
+    j = right
+    while True:
+        while True:
+            i = i + 1
+            if lyst[i] >= pivot:
+                break
+        while True:
+            j = j - 1
+            if j == left or lyst[j] <= pivot:
+                break
+        if i < j:
+            swap(lyst, i, j)
+        else:
+            break
+    swap(lyst, i, right)
+    return i
+
+def swap(lyst, i, j):
+    """Exchanges the items at positions i and j."""
+    # You could say lyst[i], lyst[j] = lyst[j], lyst[i]
+    # but the following code shows what is really going on
+    temp = lyst[i]
+    lyst[i] = lyst[j]
+    lyst[j] = temp
+```
+
+**STEP2**
+
+据说，对于很小的数组（$N \le 20），快速排序不如插入排序。
+所以，我们修正QuickSort算法，当数组长度小于某个值（这里选了10）时，
+改成调用插入排序：
+
+> QuickSort(A, l, r)
+> 1 if r - l <= 10
+> 2     return InsertionSort(A, l, r)
+> 3 i = Partition(A, l, r)
+> 4 QuickSort(A, l, i - 1)
+> 5 QuickSort(A, i + 1, r)
+
+由于修改一目了然，这里就直接给出Python实现：

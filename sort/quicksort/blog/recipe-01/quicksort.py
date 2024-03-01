@@ -28,6 +28,3 @@ def swap(lyst, i, j):
     lyst[i] = lyst[j]
     lyst[j] = temp
 
-
-
-
