@@ -1,4 +1,4 @@
-## 手把手实现快速排序：Python语言实现
+## 快速排序：Python语言实现
 
 ### 什么是快速排序？
 
@@ -22,23 +22,23 @@
 下面是对一个典型的子数组$A[l..r]$进行快速排序的伪代码：
 
 > QuickSort(A, l, r)
-> 1 if l >= r
-> 2     return
-> 3 i = Partition(A, l, r)
-> 4 QuickSort(A, l, i - 1)
-> 5 QuickSort(A, i + 1, r)
+> 1  if l >= r
+> 2    return
+> 3  i = Partition(A, l, r)
+> 4  QuickSort(A, l, i - 1)
+> 5  QuickSort(A, i + 1, r)
 
 而算法的核心是Partition过程：
 
 > Partition(A, l, r)
-> 1 p = A[r]
-> 2 i = l - 1
-> 3 for j = l to r - 1
-> 4     if A[j] <= p
-> 5         i = i + 1
-> 6         exchange A[i] with A[j]
-> 7 exchange A[i + 1] with A[r]
-> 8 return i + 1
+> 1  p = A[r]
+> 2  i = l - 1
+> 3  for j = l to r - 1
+> 4    if A[j] <= p
+> 5      i = i + 1
+> 6      exchange A[i] with A[j]
+> 7  exchange A[i + 1] with A[r]
+> 8  return i + 1
 
 下图显示了Partition如何在一个包含8个元素的数组上进行操作的过程。
 
@@ -142,22 +142,22 @@ def swap(lyst, i, j):
 当然这里的伪码可能与最原始Hoare版本有所出入：
 
 > Hoare-Partition(A, l, r)
-> 1  p = A[r]
-> 2  i = l - 1
-> 3  j = r
-> 4  while TRUE
-> 5     repeat
-> 6         i = i + 1
-> 7     until A[i] >= p
-> 8     repeat
-> 9         j = j - 1
+>  1  p = A[r]
+>  2  i = l - 1
+>  3  j = r
+>  4  while TRUE
+>  5    repeat
+>  6      i = i + 1
+>  7    until A[i] >= p
+>  8    repeat
+>  9      j = j - 1
 > 10    until j == l or A[j] <= p
 > 11    if i < j
-> 12        exchange A[i] with A[j]
+> 12      exchange A[i] with A[j]
 > 13    else 
-> 14        break
-> 15 exchange A[i] with A[r]
-> 16 return i
+> 14      break
+> 15  exchange A[i] with A[r]
+> 16  return i
 
 下图显示了Hoare-Partition如何在一个包含10个元素的数组上进行操作的过程。
 
@@ -216,11 +216,11 @@ def swap(lyst, i, j):
 改成调用插入排序：
 
 > QuickSort(A, l, r)
-> 1 if r - l <= 10
-> 2     return InsertionSort(A, l, r)
-> 3 i = Partition(A, l, r)
-> 4 QuickSort(A, l, i - 1)
-> 5 QuickSort(A, i + 1, r)
+> 1  if r - l <= 10
+> 2    return InsertionSort(A, l, r)
+> 3  i = Partition(A, l, r)
+> 4  QuickSort(A, l, i - 1)
+> 5  QuickSort(A, i + 1, r)
 
 由于修改一目了然，且这里也不打算介绍插入排序算法，就直接给出Python实现：
 
@@ -290,7 +290,7 @@ def insertionSort(lyst, left, right):
 这里给出一个叫Median-of-Three Partitioning（三数中值分隔法）的方式，一句话来描述：
 将子数组的左端、右端和中心位置上的三个元素的中值作为枢纽元。
 
-这次先给出Python实现代码，稍后再再给出解释说明：
+这次先给出Python实现代码，稍后再给出解释说明：
 
 quicksort.py
 ```py
@@ -368,12 +368,12 @@ def insertionSort(lyst, left, right):
 
 ![median3](median3.png)
 
-当median3调用完，枢纽元在子数组的从右数第二个元素（索引为$r-1$），
-子数组的左端元素（索引为$l$）小于枢纽元，
-子数组的右端元素（索引为$r$）大于枢纽元，
-所以Partition过程需要处理的区间就从原来的$[l, r-1]$（索引$r$为pivot）
-变成$[l+1, r-2]$（索引$r-1$为pivoit），而且由于左右端的元素可以作为哨兵元素，
-所以对于索引$j$是否越过子数组左端的判断也可以去掉了。
+当median3调用完，枢纽元在子数组的从右数第二个元素（索引为$r-1$），  
+子数组的左端元素（索引为$l$）小于枢纽元，  
+子数组的右端元素（索引为$r$）大于枢纽元，  
+所以Partition过程需要处理的区间就从原来的$[l, r-1]$（索引$r$为pivot）  
+变成$[l+1, r-2]$（索引$r-1$为pivoit），而且由于左右端的元素可以作为哨兵元素，  
+所以对于索引$j$是否越过子数组左端的判断也可以去掉了。  
 
 
 至此，我们就用Python实现了一个相对完整快速排序算法。
