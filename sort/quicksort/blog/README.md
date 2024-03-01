@@ -211,7 +211,7 @@ def swap(lyst, i, j):
 
 **STEP2**
 
-据说，对于很小的数组（$N \le 20），快速排序不如插入排序。
+据说，对于很小的数组（$N \le 20$），快速排序不如插入排序。
 所以，我们修正QuickSort算法，当数组长度小于某个值（这里选了10）时，
 改成调用插入排序：
 
@@ -222,7 +222,7 @@ def swap(lyst, i, j):
 > 4 QuickSort(A, l, i - 1)
 > 5 QuickSort(A, i + 1, r)
 
-由于修改一目了然，这里就直接给出Python实现：
+由于修改一目了然，且这里也不打算介绍插入排序算法，就直接给出Python实现：
 
 quicksort.py
 ```py
@@ -281,3 +281,110 @@ def insertionSort(lyst, left, right):
         lyst[j + 1] = itemToInsert
         i += 1
 ```
+
+**STEP3**
+
+当Partition（划分）n个元素的子数组，产生包含了$n-1$个元素和$0$个元素时，
+快速排序的最坏情况发生了。为了避免这种情况，通常会采用随机选择枢纽元的方式。
+
+这里给出一个叫Median-of-Three Partitioning（三数中值分隔法）的方式，一句话来描述：
+将子数组的左端、右端和中心位置上的三个元素的中值作为枢纽元。
+
+这次先给出Python实现代码，稍后再再给出解释说明：
+
+quicksort.py
+```py
+#!/usr/bin/env python3
+# quicksort.py
+
+def quicksort(lyst):
+    quicksortHelper(lyst, 0, len(lyst) - 1)
+
+def quicksortHelper(lyst, left, right):
+    if right - left <= 10:
+        return insertionSort(lyst, left, right)
+    pivotLocation = partition(lyst, left, right)
+    quicksortHelper(lyst, left, pivotLocation - 1)
+    quicksortHelper(lyst, pivotLocation + 1, right)
+
+def partition(lyst, left, right):
+    median3(lyst, left, right)
+
+    pivot = lyst[right - 1]
+    i = left
+    j = right - 1
+    while True:
+        while True:
+            i = i + 1
+            if lyst[i] >= pivot:
+                break
+        while True:
+            j = j - 1
+            if lyst[j] <= pivot:
+                break
+        if i < j:
+            swap(lyst, i, j)
+        else:
+            break
+    swap(lyst, i, right - 1)
+    return i
+
+def median3(lyst, left, right):
+    center = (left + right) // 2
+
+    if lyst[center] < lyst[left]:
+        swap(lyst, center, left)
+    if lyst[right] < lyst[left]:
+        swap(lyst, left, right)
+    if lyst[right] < lyst[center]:
+        swap(lyst, center, right)
+
+    swap(lyst, center, right - 1)
+
+def swap(lyst, i, j):
+    """Exchanges the items at positions i and j."""
+    # You could say lyst[i], lyst[j] = lyst[j], lyst[i]
+    # but the following code shows what is really going on
+    temp = lyst[i]
+    lyst[i] = lyst[j]
+    lyst[j] = temp
+
+def insertionSort(lyst, left, right):
+    i = left + 1
+    while i <= right:
+        itemToInsert = lyst[i]
+        j = i - 1
+        while j >= 0:
+            if itemToInsert < lyst[j]:
+                lyst[j + 1] = lyst[j]
+                j -= 1
+            else:
+                break
+        lyst[j + 1] = itemToInsert
+        i += 1
+```
+
+下图显示了median3（Median-of-Three）如何在一个包含10个元素的数组上进行操作的过程。
+
+![median3](median3.png)
+
+当median3调用完，枢纽元在子数组的从右数第二个元素（索引为$r-1$），
+子数组的左端元素（索引为$l$）小于枢纽元，
+子数组的右端元素（索引为$r$）大于枢纽元，
+所以Partition过程需要处理的区间就从原来的$[l, r-1]$（索引$r$为pivot）
+变成$[l+1, r-2]$（索引$r-1$为pivoit），而且由于左右端的元素可以作为哨兵元素，
+所以对于索引$j$是否越过子数组左端的判断也可以去掉了。
+
+
+至此，我们就用Python实现了一个相对完整快速排序算法。
+
+### 参考文档：
+
+- 《算法导论（原书第3版）》
+- 《算法详解（卷1）——算法基础》
+- 《算法：C语言实现(第1-4部分)基础知识、数据结构、排序及搜索（原书第3版）》
+- 《算法Ⅰ～Ⅳ（C++实现）——基础、数据结构、排序和搜索（第三版）》
+- 《数据结构与算法分析——C语言描述（原书第2版）》
+- 《数据结构与算法分析——C++语言描述（第四版）》
+- 《数据结构（Python语言描述）》
+

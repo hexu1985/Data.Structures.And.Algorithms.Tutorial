@@ -2,3 +2,4 @@
 
 - Hoare partition版本，枢纽元选成最右侧元素
 - 小于等于10个元素的子数组用插入排序
+- Pivot选择采用Median-of-Three方法
