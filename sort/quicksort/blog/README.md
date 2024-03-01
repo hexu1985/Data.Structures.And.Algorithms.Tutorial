@@ -17,7 +17,7 @@
 
 ![quicksort illustrated](quicksort_illustrated.png)
 
-### 快速排序算法的伪码
+### 快速排序算法的伪码和说明
 
 下面是对一个典型的子数组$A[l..r]$进行快速排序的伪代码：
 
@@ -132,5 +132,25 @@ def swap(lyst, i, j):
     lyst[j] = temp
 ```
 
-### 快速排序算法的优化
+### 快速排序算法的改进和优化
+
+接下来，我们逐步改进和优化快速排序，最终的算法接近于C++标准库中std::sort的实现。
+
+**STEP1**
+
+
+> Hoare-Partition(A, l, r)
+>  1 p = A[l]
+>  2 i = l - 1
+>  3 j = r + 1
+>  4 while TRUE
+>  5    repeat
+>  6        j = j - 1
+>  7    until A[j] <= p
+>  8    repeat
+>  9        i = i + 1
+> 10    until A[i] >= p
+> 11    if i < j
+> 12        exchange A[i] with A[j]
+> 13    else return j
 
