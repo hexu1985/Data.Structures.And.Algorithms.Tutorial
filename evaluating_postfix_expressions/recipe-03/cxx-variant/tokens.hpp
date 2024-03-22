@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <variant>
 
 class Token {
 public:
@@ -22,14 +23,14 @@ public:
     Token() {
     }
 
-    explicit Token(int val) {
+    explicit Token(int i) {
         type = Token::INT;
-        value.i = val;
+        value = i;
     }
 
-    explicit Token(char ch) {
-        type = makeType(ch);
-        value.c = ch;
+    explicit Token(const std::string& s) {
+        type = makeType(s);
+        value = s;
     }
 
     bool isOperator() const {
@@ -41,41 +42,39 @@ public:
     }
 
     std::string toString() const {
-        if (isOperand()) {
-            return std::to_string(value.i);
-        } else {
-            return std::string(1, value.c);
-        }
+        struct {
+            std::string str;
+            void operator()(int i) { str = std::to_string(i); }
+            void operator()(const std::string& s) { str = s; }
+        } visitor;
+
+        std::visit(visitor, value);
+        return visitor.str;
     }
 
     int getType() const {
         return type;
     }
 
-    int getValue() const {
-        return value.i;
+    const std::variant<int, std::string>& getValue() const {
+        return value;
     }
 
-    char getOperator() const {
-        return value.c;
-    }
-
-    int makeType(char ch) {
-        switch (ch) {
-            case '*':
-                return Token::MUL;
-            case '/':
-                return Token::DIV;
-            case '+':
-                return Token::PLUS;
-            case '-':
-                return Token::MINUS;
-            case '(':
-                return Token::LPAR;
-            case ')':
-                return Token::RPAR;
-            default:
-                return Token::UNKNOWN;
+    int makeType(const std::string& ch) {
+        if (ch == "*") {
+            return Token::MUL;
+        } else if (ch == "/") {
+            return Token::DIV;
+        } else if (ch == "+") {
+            return Token::PLUS;
+        } else if (ch == "-") {
+            return Token::MINUS;
+        } else if (ch == "(") {
+            return Token::LPAR;
+        } else if (ch == ")") {
+            return Token::RPAR;
+        } else {
+            return Token::UNKNOWN;
         }
     }
 
@@ -95,10 +94,7 @@ public:
 
 private:
     int type{};
-    union value_union {
-        int i;
-        char c;
-    } value{};
+    std::variant<int, std::string> value{};
 };
 
 namespace std {

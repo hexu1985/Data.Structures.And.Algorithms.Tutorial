@@ -48,8 +48,8 @@ public:
                 auto t2 = operandStack.top(); operandStack.pop();
                 auto t1 = operandStack.top(); operandStack.pop();
                 auto result = Token(computeValue(currentToken, 
-                                                 t1.getValue(),
-                                                 t2.getValue()));
+                                                 std::get<int>(t1.getValue()),
+                                                 std::get<int>(t2.getValue())));
                 operandStack.push(result);
             } else {
                 throw std::logic_error("Unknown token type");
@@ -59,7 +59,7 @@ public:
             throw std::logic_error("Too many operands on the stack");
         }
         auto result = operandStack.top(); operandStack.pop();
-        return result.getValue();
+        return std::get<int>(result.getValue());
     }
 
     std::string toString() const {
