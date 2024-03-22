@@ -81,8 +81,6 @@ class PFEvaluator(object):
             result = value1 * value2;
         elif theType == Token.DIV:
             result = value1 // value2;
-        elif theType == Token.EXPO:
-            result = value1 ** value2;
         else:
             raise Exception("Unknown operator")
         return result
