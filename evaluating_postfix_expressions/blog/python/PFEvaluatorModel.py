@@ -4,7 +4,7 @@ from Token import Token
 from Scanner import Scanner
 from Stack import Stack
 
-class PFEvaluatorModel(object):
+class PFEvaluatorModel:
 
     def evaluate(self, sourceStr):
         self.evaluator = PFEvaluator(Scanner(sourceStr))
@@ -22,7 +22,7 @@ class PFEvaluatorModel(object):
         return str(self.evaluator)
 
     
-class PFEvaluator(object):
+class PFEvaluator:
    
     def __init__(self, scanner):
         self.expressionSoFar = ""
