@@ -7,7 +7,7 @@ class Stack:
         return len(self.items)
 
     def __str__(self):
-        return str(self.items)
+        return "[" + ", ".join(map(str, self.items)) + "]"
 
     def __iter__(self):
         return iter(self.items)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from tokens import Token
+from Token import Token
 
 class Scanner:
 
