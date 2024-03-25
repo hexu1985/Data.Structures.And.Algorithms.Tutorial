@@ -4,24 +4,6 @@ from Token import Token
 from Scanner import Scanner
 from Stack import Stack
 
-class PFEvaluatorModel:
-
-    def evaluate(self, sourceStr):
-        self.evaluator = PFEvaluator(Scanner(sourceStr))
-        value = self.evaluator.evaluate()
-        return value
-   
-    def format(self, sourceStr):
-        normalizedStr = ""
-        scanner = Scanner(sourceStr);
-        while scanner.hasNext():
-            normalizedStr += str(scanner.next()) + " "
-        return normalizedStr;   
-
-    def evaluationStatus(self):
-        return str(self.evaluator)
-
-    
 class PFEvaluator:
    
     def __init__(self, scanner):
@@ -66,6 +48,9 @@ class PFEvaluator:
                       str(self.operandStack)
         return result
 
+    def evaluationStatus(self):
+        return str(self)
+
     def computeValue(self, op, value1, value2):
         result = 0;
         theType = op.getType()
@@ -81,19 +66,18 @@ class PFEvaluator:
             raise Exception("Unknown operator")
         return result
 
-def test_evaluator(evaluator, sourceStr):
-    try:
-        print(evaluator.format(sourceStr))
-        print(evaluator.evaluate(sourceStr))
-    except Exception as e:
-        print(e, evaluator.evaluationStatus())
 
 def main():
-    # A simple tester program
-    evaluator = PFEvaluatorModel()
-    test_evaluator(evaluator, "4 5 6 * + 3 -")
-    test_evaluator(evaluator, "1 9 * /")
-    test_evaluator(evaluator, "2 3 5 +")
+    while True:
+        sourceStr = input("Enter a postfix expression: ")
+        if sourceStr == "":
+            break
+        else:
+            try:
+                evaluator = PFEvaluator(Scanner(sourceStr))
+                print("Result:", evaluator.evaluate())
+            except Exception as e:
+                print(e, evaluator.evaluationStatus())
 
 if __name__ == "__main__":
     main()

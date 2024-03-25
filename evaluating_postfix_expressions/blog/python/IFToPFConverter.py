@@ -15,7 +15,7 @@ class IFToPFConverter:
         """Returns a list of tokens that represent the postfix
         form of sourceStr.  Assumes that the infix expression
         in sourceStr is syntactically correct"""
-        postfix = []
+        postfix = list()
         while self.scanner.hasNext():
             currentToken = self.scanner.next()
             self.expressionSoFar += str(currentToken) + " "
