@@ -27,12 +27,12 @@ class IFToPFConverter:
                 self.operatorStack.push(currentToken)
             elif currentToken.getType() == Token.RPAR:
                 if self.operatorStack.isEmpty():
-                    raise AttributeError("Too few operators")
+                    raise AttributeError("Too few operators(No matching opening left parenthese found)")
                 topOperator = self.operatorStack.pop()
                 while topOperator.getType() != Token.LPAR:
                     postfix.append(topOperator)
                     if self.operatorStack.isEmpty():
-                        raise AttributeError("Too few operators")
+                        raise AttributeError("Too few operators(No matching opening left parenthese found)")
                     topOperator = self.operatorStack.pop()
             else:
                 while not self.operatorStack.isEmpty() and \
@@ -40,6 +40,8 @@ class IFToPFConverter:
                     postfix.append(self.operatorStack.pop())
                 self.operatorStack.push(currentToken)
         while not self.operatorStack.isEmpty():
+            if self.operatorStack.peek().getType() == Token.LPAR:
+                raise AttributeError("Too few operators(No matching opening right parenthese found)")
             postfix.append(self.operatorStack.pop())
         return postfix
    

@@ -49,6 +49,7 @@ def main():
     test_evaluator(evaluator, "8 + 2 * 3")
     test_evaluator(evaluator, "(8 + 2) * 3")
     test_evaluator(evaluator, "(8 + 2 * 3")
+    test_evaluator(evaluator, "8 + 2) * 3")
 
 if __name__ == "__main__":
     main()
