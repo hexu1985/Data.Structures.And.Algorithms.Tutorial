@@ -30,18 +30,18 @@ class IFEvaluatorModel:
 
     def evaluationStatus(self):
         """Check to see if an evaluation has been done first."""
-        if self.evaluator is None:
-            evalStatus = ""
-        else:
-            evalStatus = str(self.evaluator)
-        return str(self.converter) + "\n" + evalStatus
+        result = str(self.converter)
+        if self.evaluator:
+            result += "\n" + str(self.evaluator)
+        return result
 
 def test_evaluator(evaluator, sourceStr):
     try:
         print(evaluator.format(sourceStr))
         print(evaluator.evaluate(sourceStr))
     except Exception as e:
-        print(e, evaluator.evaluationStatus())
+        print(e)
+        print(evaluator.evaluationStatus())
 
 def main():
     # A simple tester program

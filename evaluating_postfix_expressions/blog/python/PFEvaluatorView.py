@@ -13,6 +13,7 @@ class PFEvaluatorView:
                 print(evaluator.format(sourceStr))
                 print(evaluator.evaluate(sourceStr))
             except Exception as e:
-                print(e, evaluator.evaluationStatus())
+                print(e)
+                print(evaluator.evaluationStatus())
 
 PFEvaluatorView().run()

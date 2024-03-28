@@ -27,7 +27,8 @@ def test_evaluator(evaluator, sourceStr):
         print(evaluator.format(sourceStr))
         print(evaluator.evaluate(sourceStr))
     except Exception as e:
-        print(e, evaluator.evaluationStatus())
+        print(e)
+        print(evaluator.evaluationStatus())
 
 def main():
     # A simple tester program

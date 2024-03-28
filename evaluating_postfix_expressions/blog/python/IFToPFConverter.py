@@ -46,11 +46,11 @@ class IFToPFConverter:
         return postfix
    
     def __str__(self):
-        result = "\n"
+        result = ""
         if self.expressionSoFar == "":
-            result += "Portion of expression processed: none\n"
+            result += "Portion of infix expression processed: none\n"
         else: 
-            result += "Portion of expression processed: " + \
+            result += "Portion of infix expression processed: " + \
                    self.expressionSoFar + "\n"
         if self.operatorStack.isEmpty():
             result += "The stack is empty"
@@ -77,7 +77,8 @@ def main():
                     print(token, end = " ")
                 print()
             except Exception as e:
-                print(e, converter.conversionStatus())
+                print(e)
+                print(converter.conversionStatus())
 
 if __name__ == "__main__":
     main()

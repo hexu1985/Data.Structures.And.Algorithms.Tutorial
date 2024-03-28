@@ -35,11 +35,11 @@ class PFEvaluator:
         return result.getValue();   
 
     def __str__(self):
-        result = "\n"
+        result = ""
         if self.expressionSoFar == "":
-            result += "Portion of expression processed: none\n"
+            result += "Portion of postfix expression processed: none\n"
         else: 
-            result += "Portion of expression processed: " + \
+            result += "Portion of postfix expression processed: " + \
                    self.expressionSoFar + "\n"
         if self.operandStack.isEmpty():
             result += "The stack is empty"
@@ -77,7 +77,8 @@ def main():
                 evaluator = PFEvaluator(Scanner(sourceStr))
                 print("Result:", evaluator.evaluate())
             except Exception as e:
-                print(e, evaluator.evaluationStatus())
+                print(e)
+                print(evaluator.evaluationStatus())
 
 if __name__ == "__main__":
     main()

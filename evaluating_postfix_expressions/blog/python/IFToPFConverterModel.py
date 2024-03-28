@@ -28,7 +28,8 @@ def test_converter(converter, sourceStr):
         print(converter.format(sourceStr))
         print(converter.convert(sourceStr))
     except Exception as e:
-        print(e, converter.conversionStatus())
+        print(e)
+        print(converter.conversionStatus())
 
 def main():
     # A simple tester program
