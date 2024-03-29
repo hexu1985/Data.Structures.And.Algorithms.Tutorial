@@ -217,7 +217,10 @@ Enter an infix expression:
     - getPrecedence()：返回运算符的优先级。
 
 7. Stack类
-    通用的栈容器实现，不做过多介绍，后面直接看代码。
+    通用的栈容器实现，主要用到了peek()、push()和pop()方法：
+    - peek()：返回栈顶部的项，如果栈为空，抛出异常。
+    - push(item)：在栈的顶部添加一项。
+    - pop()：在栈的顶部删除一项并返回该项。
 
 ### 程序的实现
 
@@ -411,3 +414,105 @@ IFToPFConverter.convert()函数的具体步骤如下：
 ![表7.6](table-7-6.png)
 
 ![表7.7](table-7-7.png)
+
+
+4. PFEvaluator类：PFEvaluator.py
+
+```py
+#!/usr/bin/env python3
+
+from Token import Token
+from Scanner import Scanner
+from Stack import Stack
+
+class PFEvaluator:
+   
+    def __init__(self, scanner):
+        self.expressionSoFar = ""
+        self.operandStack = Stack()
+        self.scanner = scanner
+
+    def evaluate(self):
+        while self.scanner.hasNext():
+            currentToken = self.scanner.next()
+            self.expressionSoFar += str(currentToken) + " "
+            if currentToken.getType() == Token.INT:
+                self.operandStack.push(currentToken)
+            elif currentToken.isOperator(): 
+                if len(self.operandStack) < 2:
+                    raise AttributeError("Too few operands on the stack")
+                t2 = self.operandStack.pop()
+                t1 = self.operandStack.pop()
+                result = Token(self.computeValue(currentToken,
+                                                 t1.getValue(),
+                                                 t2.getValue()))
+                self.operandStack.push(result)
+
+            else:
+                raise AttributeError("Unknown token type")
+        if len(self.operandStack) > 1:
+            raise AttributeError("Too many operands on the stack")
+        result = self.operandStack.pop()
+        return result.getValue();   
+
+    def __str__(self):
+        result = ""
+        if self.expressionSoFar == "":
+            result += "Portion of postfix expression processed: none\n"
+        else: 
+            result += "Portion of postfix expression processed: " + \
+                   self.expressionSoFar + "\n"
+        if self.operandStack.isEmpty():
+            result += "The stack is empty"
+        else:
+            result += "Operands on the stack          : " + \
+                      str(self.operandStack)
+        return result
+
+    def evaluationStatus(self):
+        return str(self)
+
+    def computeValue(self, op, value1, value2):
+        result = 0;
+        theType = op.getType()
+        if theType == Token.PLUS:
+            result = value1 + value2;
+        elif theType == Token.MINUS:
+            result = value1 - value2;
+        elif theType == Token.MUL:
+            result = value1 * value2;
+        elif theType == Token.DIV:
+            result = value1 // value2;
+        else:
+            raise Exception("Unknown operator")
+        return result
+
+
+def main():
+    while True:
+        sourceStr = input("Enter a postfix expression: ")
+        if sourceStr == "":
+            break
+        else:
+            try:
+                evaluator = PFEvaluator(Scanner(sourceStr))
+                print("Result:", evaluator.evaluate())
+            except Exception as e:
+                print(e)
+                print(evaluator.evaluationStatus())
+
+if __name__ == "__main__":
+    main()
+```
+
+
+PFEvaluator.evaluate()函数的具体步骤如下：
+    1. 开始的时候，有一个空的栈（operandStack），栈用来保存运算数和运算结果。
+    2. 从左向右扫描后缀表达式。
+    3. 遇到一个运算数的时候，将其压入到栈中。
+    4. 遇到一个运算符的时候，从栈中弹出两个运算数，并且对这两个运算数应用该运算符，并且将结果压入栈中。
+    5. 继续遍历，直到到达了表达式的末尾，此时，只剩下表达式的值。
+
+表7.5举例说明了这个过程。
+
+![表7.5](table-7-5.png)
