@@ -134,7 +134,90 @@ Enter an infix expression:
 
 1. IFEvaluatorView类
 
-主要的方法就一个run()，具体的代码逻辑如下图：
+    - 主要的方法就一个run()，具体的代码逻辑如下图：
 
-![IFEvaluatorView.run()流程图](IFEvaluatorView_flow.png)
+    ![IFEvaluatorView.run()流程图](IFEvaluatorView_flow.png)
 
+2. IFEvaluatorModel类
+    模型包括format()、evaluate()和evaluationStatus()这三个方法，下面分别说明：
+
+    - format(expressionStr)的流程如下图：
+
+    ![IFEvaluatorModel.format()流程图](IFEvaluatorModel_format_flow.png)
+
+    - evaluate(expressionStr)的流程很简单：
+        + 创建一个IFToPFConverter类对象，将Scanner(expressionStr)传入IFToPFConverter，获取后缀表达式
+        + 创建一个PFEvaluator类对象，将Scanner(后缀表达式字符串)传入PFEvaluator，返回计算结果
+
+    - evaluationStatus()：
+        + 获取IFToPFConverter的状态信息和PFEvaluator的状态信息并返回
+
+3. IFToPFConverter类
+    包括构造函数，以及convert()和conversionStatus()方法：
+
+    - 构造函数IFToPFConverter(scanner)：
+        + 创建operatorStack，用来存放运算符的栈
+        + 保存传入的scanner
+
+    - convert()：
+        + 遍历scanner中的Token
+        + 返回后缀表达式的Token列表
+
+    - conversionStatus()返回多行字符串：
+        + 已经被处理的表达式字符串部分
+        + 当前operatorStack上的符号
+
+4. PFEvaluator类
+    包括构造函数，以及evaluate()和evaluationStatus()方法：
+
+    - 构造函数PFEvaluator(scanner)：
+        + 创建operandStack，用来存放运算数的栈
+        + 保存传入的scanner
+
+    - evaluate()：
+        + 遍历scanner中的Token
+        + 返回后缀表达式的计算结果
+
+    - evaluationStatus()返回多行字符串：
+        + 已经被处理的表达式字符串部分
+        + 当前operandStack上的符号
+
+5. Scanner类
+    包括构造函数，以及hasNext()和next()方法：
+
+    - 构造函数Scanner(sourceStr)：保存sourceStr字符串，用作后续扫描并提取符号（Token）
+    - hasNext()：如果字符串序列中还有下一个符号（Token），返回True，否则返回False
+    - next()：返回下一个符号（Token），如果hasNext()返回Flase了，则抛出异常。
+
+6. Token类
+    包含两个成员变量：type和value。
+    - type标识符号的类型：运算数还是运算符，以及哪种运算符，type是如下的Token类变量之一：
+        ```
+        UNKNOWN  = 0        # unknown
+        
+        INT      = 4        # integer
+                
+        MINUS    = 5        # minus    operator
+        PLUS     = 6        # plus     operator
+        MUL      = 7        # multiply operator
+        DIV      = 8        # divide   operator
+        LPAR     = 9        # left par operator
+        RPAR     = 10       # rightpar operator
+        ```
+    - value保存运算符数的值，或者预算符的字符串内容。
+
+    包含构造函数，以及getType()、getValue()和isOperator()方法：
+    - 构造函数Token(value):
+        + 如果value是个整数，创建个Token.INT类型的Token对象
+        + 否则创建个运算符类型的Token对象（根据运算符的字符串内容创建具体的运算符Token）
+
+    - getType()：返回Token的类型
+    - getValue()：返回Token的值。
+    - isOperator()：判断Token是否为运算符。
+
+7. Stack类
+    通用的栈容器实现，不做过多介绍，后面直接看代码。
+
+        1. 开始的时候，有一个空的后缀表达式和一个空的栈（operatorStack），栈用来保存运算符和左括号。
+        2. 从左向右扫描中缀表达式。
+        3. 遇到一个运算数的时候，将其添加到
