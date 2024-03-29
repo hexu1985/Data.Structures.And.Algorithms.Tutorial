@@ -214,10 +214,200 @@ Enter an infix expression:
     - getType()：返回Token的类型
     - getValue()：返回Token的值。
     - isOperator()：判断Token是否为运算符。
+    - getPrecedence()：返回运算符的优先级。
 
 7. Stack类
     通用的栈容器实现，不做过多介绍，后面直接看代码。
 
-        1. 开始的时候，有一个空的后缀表达式和一个空的栈（operatorStack），栈用来保存运算符和左括号。
-        2. 从左向右扫描中缀表达式。
-        3. 遇到一个运算数的时候，将其添加到
+### 程序的实现
+
+下面按照设计中类的顺序给出Python实现代码，必要的地方会给出一些解释。
+
+1. IFEvaluatorView类：IFEvaluatorView.py
+
+```py
+#!/usr/bin/env python3
+
+from IFEvaluatorModel import IFEvaluatorModel
+
+class IFEvaluatorView:
+
+    def run(self):
+        evaluator = IFEvaluatorModel()
+        while True:
+            sourceStr = input("Enter an infix expression: ")
+            if sourceStr == "": break
+            try:
+                print(evaluator.format(sourceStr))
+                print(evaluator.evaluate(sourceStr))
+            except Exception as e:
+                print(e)
+                print(evaluator.evaluationStatus())
+            print()
+
+IFEvaluatorView().run()
+```
+
+2. IFEvaluatorModel类：IFEvaluatorModel.py
+
+```py
+#!/usr/bin/env python3
+
+from io import StringIO
+from Scanner import Scanner
+from PFEvaluator import PFEvaluator
+from IFToPFConverter import IFToPFConverter
+
+class IFEvaluatorModel:
+   
+    def evaluate(self, sourceStr):
+        self.evaluator = None
+        self.converter = IFToPFConverter(Scanner(sourceStr))
+        postfixStr = self.postfixStr(self.converter.convert())
+        self.evaluator = PFEvaluator(Scanner(postfixStr))
+        value = self.evaluator.evaluate()
+        return value
+
+    def postfixStr(self, postfix):
+        strBuffer = StringIO()
+        for token in postfix:
+            print(token, end = " ", file=strBuffer)
+        return strBuffer.getvalue()
+
+    def format(self, sourceStr):
+        normalizedStr = ""
+        scanner = Scanner(sourceStr);
+        while scanner.hasNext():
+            normalizedStr += str(scanner.next()) + " "
+        return normalizedStr;
+
+    def evaluationStatus(self):
+        """Check to see if an evaluation has been done first."""
+        result = str(self.converter)
+        if self.evaluator:
+            result += "\n" + str(self.evaluator)
+        return result
+
+def test_evaluator(evaluator, sourceStr):
+    try:
+        print(evaluator.format(sourceStr))
+        print(evaluator.evaluate(sourceStr))
+    except Exception as e:
+        print(e)
+        print(evaluator.evaluationStatus())
+
+def main():
+    # A simple tester program
+    evaluator = IFEvaluatorModel()
+    test_evaluator(evaluator, "8 + 2 * 3")
+    test_evaluator(evaluator, "(8 + 2) * 3")
+    test_evaluator(evaluator, "(8 + 2 * 3")
+    test_evaluator(evaluator, "8 + 2) * 3")
+
+if __name__ == "__main__":
+    main()
+```
+
+3. IFToPFConverter类：IFToPFConverter.py
+
+```py
+#!/usr/bin/env python3
+
+from Token import Token
+from Scanner import Scanner
+from Stack import Stack
+
+class IFToPFConverter:
+
+    def __init__(self, scanner):
+        self.expressionSoFar = ""
+        self.operatorStack = Stack()
+        self.scanner = scanner
+
+    def convert(self):
+        """Returns a list of tokens that represent the postfix
+        form of sourceStr.  Assumes that the infix expression
+        in sourceStr is syntactically correct"""
+        postfix = list()
+        while self.scanner.hasNext():
+            currentToken = self.scanner.next()
+            self.expressionSoFar += str(currentToken) + " "
+            if currentToken.getType() == Token.UNKNOWN:
+                raise AttributeError("Unrecognized symbol")
+            if currentToken.getType() == Token.INT:
+                postfix.append(currentToken)
+            elif currentToken.getType() == Token.LPAR:
+                self.operatorStack.push(currentToken)
+            elif currentToken.getType() == Token.RPAR:
+                if self.operatorStack.isEmpty():
+                    raise AttributeError("Too few operators(No matching opening left parenthese found)")
+                topOperator = self.operatorStack.pop()
+                while topOperator.getType() != Token.LPAR:
+                    postfix.append(topOperator)
+                    if self.operatorStack.isEmpty():
+                        raise AttributeError("Too few operators(No matching opening left parenthese found)")
+                    topOperator = self.operatorStack.pop()
+            else:
+                while not self.operatorStack.isEmpty() and \
+                      self.operatorStack.peek().getPrecedence() >= currentToken.getPrecedence():
+                    postfix.append(self.operatorStack.pop())
+                self.operatorStack.push(currentToken)
+        while not self.operatorStack.isEmpty():
+            if self.operatorStack.peek().getType() == Token.LPAR:
+                raise AttributeError("Too few operators(No matching opening right parenthese found)")
+            postfix.append(self.operatorStack.pop())
+        return postfix
+   
+    def __str__(self):
+        result = ""
+        if self.expressionSoFar == "":
+            result += "Portion of infix expression processed: none\n"
+        else: 
+            result += "Portion of infix expression processed: " + \
+                   self.expressionSoFar + "\n"
+        if self.operatorStack.isEmpty():
+            result += "The stack is empty"
+        else:
+            result += "Operators on the stack          : " + \
+                      str(self.operatorStack)
+        return result
+
+    def conversionStatus(self):
+        return str(self)
+
+    
+def main():
+    while True:
+        sourceStr = input("Enter an infix expression: ")
+        if sourceStr == "":
+            break
+        else:
+            try:
+                converter = IFToPFConverter(Scanner(sourceStr))
+                postfix = converter.convert()
+                print("Postfix:", end = " ")
+                for token in postfix:
+                    print(token, end = " ")
+                print()
+            except Exception as e:
+                print(e)
+                print(converter.conversionStatus())
+
+if __name__ == "__main__":
+    main()
+```
+
+IFToPFConverter.convert()函数的具体步骤如下：
+    1. 开始的时候，有一个空的后缀表达式（postfix）和一个空的栈（operatorStack），栈用来保存运算符和左括号。
+    2. 从左向右扫描中缀表达式。
+    3. 遇到一个运算数的时候，将其添加到后缀表达式的后面。
+    4. 遇到一个左括号的时候，将其压入到栈中。
+    5. 遇到一个运算符，从栈中弹出和它具有相等的或更高优先级的所有运算符，将它们添加到后缀表达式的末尾，然后，将扫描到的运算符压入到栈中。
+    6. 遇到一个右括号的时候，将运算符从栈中移动到后缀表达式中，直到遇到了与之匹配的左括号，并将其丢弃。
+    7. 遇到中缀表达式结束的时候，将栈中剩下的运算符都转移到后缀表达式之中。
+
+表7.6和表7.7举例说明了这个过程。
+
+![表7.6](table-7-6.png)
+
+![表7.7](table-7-7.png)
