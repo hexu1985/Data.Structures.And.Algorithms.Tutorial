@@ -75,7 +75,7 @@ Enter an infix expression:
 
 我们的程序中支持的算术表达式具有以下限制：
 - 算术表达式采取中缀表示法（即日常的数学表达式）
-- 运算数只支持正整数（负整数可以通过$0 - 正整数$获取）
+- 运算数只支持正整数（负整数可以通过`0 - 正整数`获取）
 - 运算符支持加、减、乘、除四则运算，优先级复合标准的四则运算
 - 表达式支持括号`()`，支持嵌套的括号`()`
 
@@ -275,16 +275,10 @@ class IFEvaluatorModel:
     def evaluate(self, sourceStr):
         self.evaluator = None
         self.converter = IFToPFConverter(Scanner(sourceStr))
-        postfixStr = self.postfixStr(self.converter.convert())
+        postfixStr = self.converter.convert()
         self.evaluator = PFEvaluator(Scanner(postfixStr))
         value = self.evaluator.evaluate()
         return value
-
-    def postfixStr(self, postfix):
-        strBuffer = StringIO()
-        for token in postfix:
-            print(token, end = " ", file=strBuffer)
-        return strBuffer.getvalue()
 
     def format(self, sourceStr):
         normalizedStr = ""
@@ -337,9 +331,6 @@ class IFToPFConverter:
         self.scanner = scanner
 
     def convert(self):
-        """Returns a list of tokens that represent the postfix
-        form of sourceStr.  Assumes that the infix expression
-        in sourceStr is syntactically correct"""
         postfix = list()
         while self.scanner.hasNext():
             currentToken = self.scanner.next()
@@ -347,7 +338,7 @@ class IFToPFConverter:
             if currentToken.getType() == Token.UNKNOWN:
                 raise AttributeError("Unrecognized symbol")
             if currentToken.getType() == Token.INT:
-                postfix.append(currentToken)
+                postfix.append(str(currentToken))
             elif currentToken.getType() == Token.LPAR:
                 self.operatorStack.push(currentToken)
             elif currentToken.getType() == Token.RPAR:
@@ -355,20 +346,20 @@ class IFToPFConverter:
                     raise AttributeError("Too few operators(No matching opening left parenthese found)")
                 topOperator = self.operatorStack.pop()
                 while topOperator.getType() != Token.LPAR:
-                    postfix.append(topOperator)
+                    postfix.append(str(topOperator))
                     if self.operatorStack.isEmpty():
                         raise AttributeError("Too few operators(No matching opening left parenthese found)")
                     topOperator = self.operatorStack.pop()
             else:
                 while not self.operatorStack.isEmpty() and \
                       self.operatorStack.peek().getPrecedence() >= currentToken.getPrecedence():
-                    postfix.append(self.operatorStack.pop())
+                    postfix.append(str(self.operatorStack.pop()))
                 self.operatorStack.push(currentToken)
         while not self.operatorStack.isEmpty():
             if self.operatorStack.peek().getType() == Token.LPAR:
                 raise AttributeError("Too few operators(No matching opening right parenthese found)")
-            postfix.append(self.operatorStack.pop())
-        return postfix
+            postfix.append(str(self.operatorStack.pop()))
+        return " ".join(postfix)
    
     def __str__(self):
         result = ""
@@ -396,11 +387,7 @@ def main():
         else:
             try:
                 converter = IFToPFConverter(Scanner(sourceStr))
-                postfix = converter.convert()
-                print("Postfix:", end = " ")
-                for token in postfix:
-                    print(token, end = " ")
-                print()
+                print("Postfix:", converter.convert())
             except Exception as e:
                 print(e)
                 print(converter.conversionStatus())

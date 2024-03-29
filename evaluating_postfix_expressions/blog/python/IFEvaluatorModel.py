@@ -10,16 +10,10 @@ class IFEvaluatorModel:
     def evaluate(self, sourceStr):
         self.evaluator = None
         self.converter = IFToPFConverter(Scanner(sourceStr))
-        postfixStr = self.postfixStr(self.converter.convert())
+        postfixStr = self.converter.convert()
         self.evaluator = PFEvaluator(Scanner(postfixStr))
         value = self.evaluator.evaluate()
         return value
-
-    def postfixStr(self, postfix):
-        strBuffer = StringIO()
-        for token in postfix:
-            print(token, end = " ", file=strBuffer)
-        return strBuffer.getvalue()
 
     def format(self, sourceStr):
         normalizedStr = ""

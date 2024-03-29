@@ -8,10 +8,7 @@ class IFToPFConverterModel:
     def convert(self, sourceStr):
         self.converter = IFToPFConverter(Scanner(sourceStr))
         postfix = self.converter.convert()
-        strBuffer = StringIO()
-        for token in postfix:
-            print(token, end = " ", file=strBuffer)
-        return strBuffer.getvalue()
+        return postfix
 
     def format(self, sourceStr):
         normalizedStr = ""

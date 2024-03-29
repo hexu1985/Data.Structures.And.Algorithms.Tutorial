@@ -12,9 +12,6 @@ class IFToPFConverter:
         self.scanner = scanner
 
     def convert(self):
-        """Returns a list of tokens that represent the postfix
-        form of sourceStr.  Assumes that the infix expression
-        in sourceStr is syntactically correct"""
         postfix = list()
         while self.scanner.hasNext():
             currentToken = self.scanner.next()
@@ -22,7 +19,7 @@ class IFToPFConverter:
             if currentToken.getType() == Token.UNKNOWN:
                 raise AttributeError("Unrecognized symbol")
             if currentToken.getType() == Token.INT:
-                postfix.append(currentToken)
+                postfix.append(str(currentToken))
             elif currentToken.getType() == Token.LPAR:
                 self.operatorStack.push(currentToken)
             elif currentToken.getType() == Token.RPAR:
@@ -30,20 +27,20 @@ class IFToPFConverter:
                     raise AttributeError("Too few operators(No matching opening left parenthese found)")
                 topOperator = self.operatorStack.pop()
                 while topOperator.getType() != Token.LPAR:
-                    postfix.append(topOperator)
+                    postfix.append(str(topOperator))
                     if self.operatorStack.isEmpty():
                         raise AttributeError("Too few operators(No matching opening left parenthese found)")
                     topOperator = self.operatorStack.pop()
             else:
                 while not self.operatorStack.isEmpty() and \
                       self.operatorStack.peek().getPrecedence() >= currentToken.getPrecedence():
-                    postfix.append(self.operatorStack.pop())
+                    postfix.append(str(self.operatorStack.pop()))
                 self.operatorStack.push(currentToken)
         while not self.operatorStack.isEmpty():
             if self.operatorStack.peek().getType() == Token.LPAR:
                 raise AttributeError("Too few operators(No matching opening right parenthese found)")
-            postfix.append(self.operatorStack.pop())
-        return postfix
+            postfix.append(str(self.operatorStack.pop()))
+        return " ".join(postfix)
    
     def __str__(self):
         result = ""
@@ -71,11 +68,7 @@ def main():
         else:
             try:
                 converter = IFToPFConverter(Scanner(sourceStr))
-                postfix = converter.convert()
-                print("Postfix:", end = " ")
-                for token in postfix:
-                    print(token, end = " ")
-                print()
+                print("Postfix:", converter.convert())
             except Exception as e:
                 print(e)
                 print(converter.conversionStatus())
