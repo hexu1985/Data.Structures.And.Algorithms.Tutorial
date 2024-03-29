@@ -97,9 +97,9 @@ Enter an infix expression:
 
 我们计算算术表达式的处理过程主要分为两大步骤
 - 将中缀表达式转化成等价的后缀表达式，
-- 计算后缀表达式的结果
+- 计算后缀表达式，获取结果
 
-所以我们的设计中，首先想到的实现中缀转后缀和计算后缀表达式的类：
+所以我们设计的类中，首先想到的实现中缀转后缀和计算后缀表达式的类：
 - IFToPFConverter类：中缀表达式转后缀表达式的类
 - PFEvaluator类：计算后缀表达式的类
 - Stack类：栈类，中缀表达式转后缀表达式，以及后缀表达式的计算中都会用到
@@ -139,6 +139,7 @@ Enter an infix expression:
     ![IFEvaluatorView.run()流程图](IFEvaluatorView_flow.png)
 
 2. IFEvaluatorModel类
+
     模型包括format()、evaluate()和evaluationStatus()这三个方法，下面分别说明：
 
     - format(expressionStr)的流程如下图：
@@ -153,6 +154,7 @@ Enter an infix expression:
         + 获取IFToPFConverter的状态信息和PFEvaluator的状态信息并返回
 
 3. IFToPFConverter类
+
     包括构造函数，以及convert()和conversionStatus()方法：
 
     - 构造函数IFToPFConverter(scanner)：
@@ -168,6 +170,7 @@ Enter an infix expression:
         + 当前operatorStack上的符号
 
 4. PFEvaluator类
+
     包括构造函数，以及evaluate()和evaluationStatus()方法：
 
     - 构造函数PFEvaluator(scanner)：
@@ -183,6 +186,7 @@ Enter an infix expression:
         + 当前operandStack上的符号
 
 5. Scanner类
+
     包括构造函数，以及hasNext()和next()方法：
 
     - 构造函数Scanner(sourceStr)：保存sourceStr字符串，用作后续扫描并提取符号（Token）
@@ -190,7 +194,9 @@ Enter an infix expression:
     - next()：返回下一个符号（Token），如果hasNext()返回Flase了，则抛出异常。
 
 6. Token类
+
     包含两个成员变量：type和value。
+
     - type标识符号的类型：运算数还是运算符，以及哪种运算符，type是如下的Token类变量之一：
         ```
         UNKNOWN  = 0        # unknown
@@ -207,6 +213,7 @@ Enter an infix expression:
     - value保存运算符数的值，或者预算符的字符串内容。
 
     包含构造函数，以及getType()、getValue()和isOperator()方法：
+
     - 构造函数Token(value):
         + 如果value是个整数，创建个Token.INT类型的Token对象
         + 否则创建个运算符类型的Token对象（根据运算符的字符串内容创建具体的运算符Token）
@@ -217,7 +224,9 @@ Enter an infix expression:
     - getPrecedence()：返回运算符的优先级。
 
 7. Stack类
+
     通用的栈容器实现，主要用到了peek()、push()和pop()方法：
+
     - peek()：返回栈顶部的项，如果栈为空，抛出异常。
     - push(item)：在栈的顶部添加一项。
     - pop()：在栈的顶部删除一项并返回该项。
@@ -516,3 +525,200 @@ PFEvaluator.evaluate()函数的具体步骤如下：
 表7.5举例说明了这个过程。
 
 ![表7.5](table-7-5.png)
+
+
+5. Scanner类：Scanner.py
+
+```py
+#!/usr/bin/env python3
+
+from Token import Token
+
+class Scanner:
+
+    EOE = ';'        # end-of-expression
+    TAB = '\t'       # tab
+
+    def __init__(self, sourceStr):
+        self.sourceStr = sourceStr
+        self.getFirstToken()
+
+    def hasNext(self):
+        return self.currentToken != None
+
+    def next(self):
+        if not self.hasNext():
+            raise Exception("There are no more tokens")           
+        temp = self.currentToken
+        self.getNextToken()
+        return temp
+
+    def getFirstToken(self):
+        self.index = 0
+        self.currentChar = self.sourceStr[0]
+        self.getNextToken()
+    
+    def getNextToken(self):
+        self.skipWhiteSpace()
+        if self.currentChar.isdigit():
+            self.currentToken = Token(self.getInteger())
+        elif self.currentChar == Scanner.EOE:
+            self.currentToken = None
+        else:
+            self.currentToken = Token(self.currentChar)
+            self.nextChar()
+    
+    def nextChar(self):
+        if self.index >= len(self.sourceStr) - 1:
+            self.currentChar = Scanner.EOE
+        else:
+            self.index += 1
+            self.currentChar = self.sourceStr[self.index]
+    
+    def skipWhiteSpace(self):
+        while self.currentChar in (' ', Scanner.TAB):
+            self.nextChar()
+    
+    def getInteger(self):
+        num = 0
+        while True:
+            num = num * 10 + int(self.currentChar)
+            self.nextChar()
+            if not self.currentChar.isdigit():
+                break
+        return num
+
+
+def main():
+    # A simple tester program
+    while True:
+        sourceStr = input("Enter an expression: ")
+        if sourceStr == "": break
+        scanner = Scanner(sourceStr)
+        while scanner.hasNext():
+            print(scanner.next())
+
+if __name__ == '__main__': 
+    main()
+```
+
+6. Token类：Token.py
+
+```py
+#!/usr/bin/env python3
+
+class Token:
+
+    UNKNOWN  = 0        # unknown
+    
+    INT      = 4        # integer
+            
+    MINUS    = 5        # minus    operator
+    PLUS     = 6        # plus     operator
+    MUL      = 7        # multiply operator
+    DIV      = 8        # divide   operator
+    LPAR     = 9        # left par operator
+    RPAR     = 10       # rightpar operator
+
+    FIRST_OP = 5        # first operator code
+
+    def __init__(self, value):
+        if type(value) == int:
+            self.type = Token.INT
+        else:
+            self.type = self.makeType(value)
+        self.value = value
+
+    def isOperator(self):
+        return self.type >= Token.FIRST_OP
+
+    def __str__(self):
+        return str(self.value)
+    
+    def getType(self):
+       return self.type
+    
+    def getValue(self):
+       return self.value
+
+    def makeType(self, ch):
+        if   ch == '*': return Token.MUL
+        elif ch == '/': return Token.DIV
+        elif ch == '+': return Token.PLUS
+        elif ch == '-': return Token.MINUS
+        elif ch == '(': return Token.LPAR
+        elif ch == ')': return Token.RPAR
+        else:           return Token.UNKNOWN
+
+    def getPrecedence(self):
+        """Returns the precedunce level of an operator."""
+        myType = self.type
+        if myType in (Token.MUL, Token.DIV):
+            return 2
+        elif myType in (Token.PLUS, Token.MINUS):
+            return 1
+        else:
+            return 0
+
+def main():
+    # A simple tester program
+    plus = Token("+")
+    minus = Token("-")
+    mul = Token("*")
+    div = Token("/")
+    unknown = Token("#")
+    anInt = Token(34)
+    print(plus, minus, mul, div, unknown, anInt)
+
+if __name__ == '__main__': 
+    main()
+```
+
+7. Stack类：Stack.py
+
+```py
+class Stack:
+    def __init__(self):
+        self.items = list()
+
+    def __len__(self):
+        return len(self.items)
+
+    def __str__(self):
+        return "[" + ", ".join(map(str, self.items)) + "]"
+
+    def __iter__(self):
+        return iter(self.items)
+
+    def isEmpty(self):
+        return len(self.items) == 0
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if self.isEmpty():
+            raise KeyError("The stack is empty")
+        return self.items.pop()
+
+    def peek(self):
+        if self.isEmpty():
+            raise KeyError("The stack is empty")
+        return self.items[-1]
+
+    def clear(self):
+        self.items = list()
+```
+
+Stack类就是简单地对列表类的封装。
+
+
+最后给出Python实现的工程代码路径：  
+<https://github.com/hexu1985/Data.Structures.And.Algorithms.Tutorial/tree/master/evaluating_postfix_expressions/blog/python>
+
+
+### 参考文档：
+
+- 《数据结构（Python语言描述）》
+- 《Fundamentals of Python Data Structures 2ND EDITION》
+
