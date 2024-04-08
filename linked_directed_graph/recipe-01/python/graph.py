@@ -2,9 +2,9 @@
 File: graph.py
 """
 
-from abstractcollection import AbstractCollection
+#from abstractcollection import AbstractCollection
 
-class LinkedEdge(object):
+class LinkedEdge:
 
     # An edge has a source vertex, a destination vertex,
     # a weight, and a mark attribute.
@@ -62,7 +62,7 @@ class LinkedEdge(object):
                str(self._vertex2)   + ":" + \
                str(self._weight)
 
-class LinkedVertex(object):
+class LinkedVertex:
 
     # A vertex has a label, a list of incident edges,
     # and a mark attribute.
@@ -145,16 +145,26 @@ class LinkedVertex(object):
             return False
 
 
-class LinkedDirectedGraph(AbstractCollection):
+class LinkedDirectedGraph:
 
     # A graph has a count of vertices, a count of edges,
     # and a dictionary of label/vertex pairs.
 
-    def __init__(self, sourceCollection = None):
+    def __init__(self, vertices=None):
+        self._size = 0
         self._edgeCount = 0
         self._vertices = {}
-        AbstractCollection.__init__(self, sourceCollection)
+        if vertices:
+            for vertex in vertices:
+                self.addVertex(vertex)
         
+    def __len__(self):
+        """-> The number of items in self."""
+        return self._size
+
+    def isEmpty(self):
+        return len(self) == 0
+
     # Methods for clearing, marks, sizes, string rep
 
     def clear(self):
@@ -191,10 +201,6 @@ class LinkedDirectedGraph(AbstractCollection):
         for edge in self.edges():
             result += " " + str(edge)
         return result
-
-    def add(self, label):
-        """For compatibility with other collections."""
-        self.addVertex(label)
 
     # Vertex related methods
     
@@ -276,11 +282,11 @@ class LinkedDirectedGraph(AbstractCollection):
 
     def incidentEdges(self, label):
         """Supports iteration over the incident edges of the
-        given verrtex."""
+        given vertex."""
         return self.getVertex(label).incidentEdges()
     
     def neighboringVertices(self, label):
         """Supports iteration over the neighboring vertices of the
-        given verrtex."""
+        given vertex."""
         return self.getVertex(label).neighboringVertices()
     
