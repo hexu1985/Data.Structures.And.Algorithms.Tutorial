@@ -1,5 +1,5 @@
 """
-File: testundirected.py
+File: longtest.py
 """
 from graph import LinkedDirectedGraph
 
@@ -61,12 +61,12 @@ g.addVertex("j")
 result = ""
 for vertex in g.vertices():
     result += str(vertex) + " "    
-    print("Expect 10        :", g.sizeVertices())
-    print("Expect a thru j  :", result)
-    print("Expect True False :", g.containsVertex("a"), end = " ")
-    print(g.containsVertex("x"))
+print("Expect 10        :", g.sizeVertices())
+print("Expect a thru j  :", result)
+print("Expect True False :", g.containsVertex("a"), end = " ")
+print(g.containsVertex("x"))
 print("Expect a b True False :", g.getVertex("a"), end = " ")
-print(g.getVertex("b"), " ", g.removeVertex("j"))
+print(g.getVertex("b"), " ", g.removeVertex("j"), end = " ")
 print(g.containsVertex("j"))
 
 vertex = g.getVertex("a")
@@ -98,13 +98,13 @@ edge.setWeight(5)
 result = ""
 for edge in g.getVertex("a").incidentEdges():
     result += str(edge) + " "  
-print("Expect edges ab1 ad7 :", result)
+print("Expect edges ab1 :", result)
 
 # Test neighboringVertices 
 result = ""
 for vertex in g.neighboringVertices("a"):
     result += str(vertex) + " "    
-print("Expect vertices bd :" + result)
+print("Expect vertices b :" + result)
 
 # Test size methods and str for graph
 print("Expect 9 and 5:", g.sizeVertices(), g.sizeEdges())

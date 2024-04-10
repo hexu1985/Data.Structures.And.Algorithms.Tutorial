@@ -1,10 +1,10 @@
 """
-File: longtest.py
+File: testundirected.py
 """
-from graph import LinkedDirectedGraph
+from graph import LinkedUndirectedGraph
 
 lyst = ["a", "b", "c", "d"]
-g = LinkedDirectedGraph(lyst)
+g = LinkedUndirectedGraph(lyst)
 print("Expect 4 : " + str(g.sizeVertices()))
 print("Expect 4 vertices a b c d and no edges: " + str(g))
       
@@ -78,7 +78,7 @@ vertex.setLabel("a", g)
 print("Expect False False:", g.containsEdge("a", "b"),
       g.containsEdge("a", "a"))
 g.addEdge("a","b", 1)
-print("Expect True False False :", g.containsEdge("a", "b"),
+print("Expect True True False :", g.containsEdge("a", "b"),
       g.containsEdge("b", "a"), g.containsEdge("a", "a"))
 g.addEdge("a","c", 2)
 g.addEdge("e","c", 4)
@@ -98,13 +98,13 @@ edge.setWeight(5)
 result = ""
 for edge in g.getVertex("a").incidentEdges():
     result += str(edge) + " "  
-print("Expect edges ab1 :", result)
+print("Expect edges ab1 da7 :", result)
 
 # Test neighboringVertices 
 result = ""
 for vertex in g.neighboringVertices("a"):
     result += str(vertex) + " "    
-print("Expect vertices b :" + result)
+print("Expect vertices bd :" + result)
 
 # Test size methods and str for graph
 print("Expect 9 and 5:", g.sizeVertices(), g.sizeEdges())
