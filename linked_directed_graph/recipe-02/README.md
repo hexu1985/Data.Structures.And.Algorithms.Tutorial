@@ -4,7 +4,8 @@
 - 支持从文件读取并创建图对象
 - 拓扑排序实现
 
-- [Python版本](python)
+- [Python版本(算法导论)](python)
+- [Python版本(算法详解)](python-2)
 
 ### 参考文档
 
