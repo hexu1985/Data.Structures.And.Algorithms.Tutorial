@@ -9,6 +9,6 @@
 
 ### 参考文档
 
-《数据结构 Python语言描述》：12.9
-
-Ch_12_Solutions/Ch_12_Projects/12.2
+- 《数据结构 Python语言描述》：12.9 Ch_12_Solutions/Ch_12_Projects/12.2
+- 《算法导论》：22.4
+- 《算法详解（卷2）》：2.5

@@ -15,8 +15,3 @@ def shortestPaths(g, startLabel):
     # Exercise
     return ["Under development"]
 
-def spanTree(g, startLabel):
-    # Exercise
-    return ["Under development"]
-
-

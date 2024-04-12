@@ -20,11 +20,10 @@ class GraphDemoView(object):
                "  2  Input a graph from a file\n" + \
                "  3  View the current graph\n" \
                "  4  Single source shortest paths\n" \
-               "  5  Minimum spanning tree\n" \
-               "  6  Topological sort\n" \
-               "  7  Exit the program\n"
+               "  5  Topological sort\n" \
+               "  6  Exit the program\n"
         while True:
-            command = self._getCommand(7, menu)
+            command = self._getCommand(6, menu)
             if   command == 1: self._getFromKeyboard()
             elif command == 2: self._getFromFile()
             elif command == 3:
@@ -32,9 +31,6 @@ class GraphDemoView(object):
             elif command == 4:
                 print("Paths:\n", self._model.run(shortestPaths))
             elif command == 5:
-                print("Tree:", \
-                      " ".join(map(str, self._model.run(spanTree))))
-            elif command == 6:
                 print("Sort:", \
                       " ".join(map(str, self._model.run(topoSort))))
             else: break
