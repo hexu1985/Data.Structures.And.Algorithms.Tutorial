@@ -11,15 +11,15 @@ def topoSort(g, startLabel = None):
     g.clearVertexMarks()
     for v in g.vertices():
         if not v.isMarked():
-            dfs(g, v, lyst)
+            _topoDfs(g, v, lyst)
 
     return lyst
 
-def dfs(g, v, lyst):
+def _topoDfs(g, v, lyst):
     v.setMark()
     for w in g.neighboringVertices(v.getLabel()):
         if not w.isMarked():
-            dfs(g, w, lyst)
+            _topoDfs(g, w, lyst)
     lyst.appendleft(v)
 
 
