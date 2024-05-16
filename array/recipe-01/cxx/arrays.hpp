@@ -1,32 +1,36 @@
 #pragma once
 
-#include <vector>
+#include <memory>
 
 template <typename T>
 class Array {
 public:
-    Array(int capacity, const T& fillValue = T()) {
+    Array(int capacity, const T& fillValue = T()): _items(new T[capacity]), _capacity(capacity) {
         for (int count = 0; count < capacity; count++) {
-            _items.push_back(fillValue);
+            _items[count] = fillValue;
         }
     }
 
-    Array(std::initializer_list<T> il): _items(il) {}
+    Array(std::initializer_list<T> il): _items(new T[il.size()]), _capacity(il.size()) {
+        int count = 0;
+        for (auto& item : il) {
+            _items[count] = item;
+            count += 1;
+        }
+    }
 
-    size_t size() const { return _items.size(); }
+    size_t size() const { return _capacity; }
 
-    using iterator = typename std::vector<T>::iterator;
-    using const_iterator = typename std::vector<T>::const_iterator;
+    T* begin() { return &_items[0]; }
+    const T* begin() const { return &_items[0]; }
 
-    iterator begin() { return _items.begin(); }
-    const_iterator begin() const { return _items.begin(); }
-
-    iterator end() { return _items.end(); }
-    const_iterator end() const { return _items.end(); }
+    T* end() { return &_items[_capacity-1]; }
+    const T* end() const { return &_items[_capacity-1]; }
 
     T& operator[] (size_t n) { return _items[n]; }
     const T& operator[] (size_t n) const { return _items[n]; }
 
 private:
-    std::vector<T> _items;
+    std::unique_ptr<T[]> _items;
+    int _capacity;
 };
