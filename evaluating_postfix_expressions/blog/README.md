@@ -195,9 +195,9 @@ Enter an infix expression:
 
 6. Token类
 
-    包含两个成员变量：type和value。
+    包含两个成员变量：`_type`和`_value`。
 
-    - type标识符号的类型：运算数还是运算符，以及哪种运算符，type是如下的Token类变量之一：
+    - `_type`标识符号的类型：运算数还是运算符，以及哪种运算符，`_type`是如下的Token类变量之一：
         ```
         UNKNOWN  = 0        # unknown
         
@@ -210,7 +210,7 @@ Enter an infix expression:
         LPAR     = 9        # left par operator
         RPAR     = 10       # rightpar operator
         ```
-    - value保存运算符数的值，或者预算符的字符串内容。
+    - `_value`保存运算符数的值，或者预算符的字符串内容。
 
     包含构造函数，以及getType()、getValue()和isOperator()方法：
 
