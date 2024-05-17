@@ -58,6 +58,7 @@ public:
         return _value.c;
     }
 
+private:
     int makeType(char ch) {
         switch (ch) {
             case '*':

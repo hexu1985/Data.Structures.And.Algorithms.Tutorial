@@ -59,6 +59,7 @@ public:
         return _value;
     }
 
+private:
     int makeType(const std::string& ch) {
         if (ch == "*") {
             return Token::MUL;
