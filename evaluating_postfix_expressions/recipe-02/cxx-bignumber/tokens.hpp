@@ -24,21 +24,21 @@ public:
     }
 
     explicit Token(const BigNumber& i) {
-        type = Token::INT;
-        value = i;
+        _type = Token::INT;
+        _value = i;
     }
 
     explicit Token(const std::string& s) {
-        type = makeType(s);
-        value = s;
+        _type = makeType(s);
+        _value = s;
     }
 
     bool isOperator() const {
-        return type >= Token::FIRST_OP;
+        return _type >= Token::FIRST_OP;
     }
 
     bool isOperand() const {
-        return type == Token::INT;
+        return _type == Token::INT;
     }
 
     std::string toString() const {
@@ -48,16 +48,16 @@ public:
             void operator()(const std::string& s) { str = s; }
         } visitor;
 
-        std::visit(visitor, value);
+        std::visit(visitor, _value);
         return visitor.str;
     }
 
     int getType() const {
-        return type;
+        return _type;
     }
 
     const std::variant<std::string, BigNumber>& getValue() const {
-        return value;
+        return _value;
     }
 
     int makeType(const std::string& ch) {
@@ -77,8 +77,8 @@ public:
     }
 
 private:
-    int type{};
-    std::variant<std::string, BigNumber> value{};
+    int _type{};
+    std::variant<std::string, BigNumber> _value{};
 };
 
 namespace std {

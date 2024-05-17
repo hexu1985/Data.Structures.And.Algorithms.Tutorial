@@ -22,43 +22,44 @@ public:
     }
 
     explicit Token(int val) {
-        type = Token::INT;
-        value.i = val;
+        _type = Token::INT;
+        _value.i = val;
     }
 
     explicit Token(char ch) {
-        type = makeType(ch);
-        value.c = ch;
+        _type = makeType(ch);
+        _value.c = ch;
     }
 
     bool isOperator() const {
-        return type >= Token::FIRST_OP;
+        return _type >= Token::FIRST_OP;
     }
 
     bool isOperand() const {
-        return type == Token::INT;
+        return _type == Token::INT;
     }
 
     std::string toString() const {
         if (isOperand()) {
-            return std::to_string(value.i);
+            return std::to_string(_value.i);
         } else {
-            return std::string(1, value.c);
+            return std::string(1, _value.c);
         }
     }
 
     int getType() const {
-        return type;
+        return _type;
     }
 
     int getValue() const {
-        return value.i;
+        return _value.i;
     }
 
     char getOperator() const {
-        return value.c;
+        return _value.c;
     }
 
+private:
     int makeType(char ch) {
         switch (ch) {
             case '*':
@@ -77,11 +78,11 @@ public:
     }
 
 private:
-    int type{};
+    int _type{};
     union value_union {
         int i;
         char c;
-    } value{};
+    } _value{};
 };
 
 namespace std {

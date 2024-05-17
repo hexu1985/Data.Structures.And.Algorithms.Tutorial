@@ -22,24 +22,24 @@ class Token(object):
 
     def __init__(self, value):
         if type(value) == int:
-            self.type = Token.INT
+            self._type = Token.INT
         else:
-            self.type = self.makeType(value)
-        self.value = value
+            self._type = self._makeType(value)
+        self._value = value
 
     def isOperator(self):
-        return self.type >= Token.FIRST_OP
+        return self._type >= Token.FIRST_OP
 
     def __str__(self):
-        return str(self.value)
+        return str(self._value)
     
     def getType(self):
-       return self.type
+       return self._type
     
     def getValue(self):
-       return self.value
+       return self._value
 
-    def makeType(self, ch):
+    def _makeType(self, ch):
         if   ch == '*': return Token.MUL
         elif ch == '/': return Token.DIV
         elif ch == '+': return Token.PLUS
