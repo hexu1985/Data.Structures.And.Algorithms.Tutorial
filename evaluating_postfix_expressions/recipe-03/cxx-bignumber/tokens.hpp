@@ -25,21 +25,21 @@ public:
     }
 
     explicit Token(const BigNumber& i) {
-        type = Token::INT;
+        _type = Token::INT;
         value = i;
     }
 
     explicit Token(const std::string& s) {
-        type = makeType(s);
+        _type = makeType(s);
         value = s;
     }
 
     bool isOperator() const {
-        return type >= Token::FIRST_OP;
+        return _type >= Token::FIRST_OP;
     }
 
     bool isOperand() const {
-        return type == Token::INT;
+        return _type == Token::INT;
     }
 
     std::string toString() const {
@@ -54,13 +54,28 @@ public:
     }
 
     int getType() const {
-        return type;
+        return _type;
     }
 
     const std::variant<std::string, BigNumber>& getValue() const {
         return value;
     }
 
+    int getPrecedence() {
+        // Returns the precedunce level of an operator.
+        switch (_type) {
+            case Token::MUL:
+            case Token::DIV:
+                return 2;
+            case Token::PLUS:
+            case Token::MINUS:
+                return 1;
+            default:
+                return 0;
+        }
+    }
+
+private:
     int makeType(const std::string& ch) {
         if (ch == "*") {
             return Token::MUL;
@@ -79,22 +94,8 @@ public:
         }
     }
 
-    int getPrecedence() {
-        // Returns the precedunce level of an operator.
-        switch (type) {
-            case Token::MUL:
-            case Token::DIV:
-                return 2;
-            case Token::PLUS:
-            case Token::MINUS:
-                return 1;
-            default:
-                return 0;
-        }
-    }
-
 private:
-    int type{};
+    int _type{};
     std::variant<std::string, BigNumber> value{};
 };
 
