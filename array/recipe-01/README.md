@@ -1,7 +1,7 @@
 ### 数组数据结构
 
 - [Python版本](python)
-- [C++ std::array版本](cxx-std-array)
+- [C++ benchmark版本](benchmark-cxx)
 - [C++版本](cxx)
 
 ### 参考文档
