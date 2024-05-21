@@ -16,7 +16,7 @@ class ArrayStack(AbstractStack):
     def __init__(self, sourceCollection = None):
         """Sets the initial state of self, which includes the
         contents of sourceCollection, if it's present."""
-        self.items = Array(ArrayStack.DEFAULT_CAPACITY)
+        self._items = Array(ArrayStack.DEFAULT_CAPACITY)
         AbstractStack.__init__(self, sourceCollection)
 
     # Accessor methods
@@ -25,7 +25,7 @@ class ArrayStack(AbstractStack):
         Visits items from bottom to top of stack."""
         cursor = 0
         while cursor < len(self):
-            yield self.items[cursor]
+            yield self._items[cursor]
             cursor += 1
 
     def peek(self):
@@ -34,24 +34,24 @@ class ArrayStack(AbstractStack):
         Raises: KeyError if stack is empty."""
         if self.isEmpty():
             raise KeyError("The stack is empty")
-        return self.items[len(self) - 1]
+        return self._items[len(self) - 1]
 
     # Mutator methods
     def clear(self):
         """Makes self become empty."""
-        self.size = 0
-        self.items = Array(ArrayStack.DEFAULT_CAPACITY)
+        self._size = 0
+        self._items = Array(ArrayStack.DEFAULT_CAPACITY)
 
     def push(self, item):
         """Inserts item at top of the stack."""
         # Resize array here if necessary
-        if len(self) == len(self.items):
+        if len(self) == len(self._items):
             temp = Array(2 * len(self))
             for i in range(len(self)):
-                temp[i] = self.items[i]
-            self.items = temp
-        self.items[len(self)] = item
-        self.size += 1
+                temp[i] = self._items[i]
+            self._items = temp
+        self._items[len(self)] = item
+        self._size += 1
 
     def pop(self):
         """Removes and returns the item at the top of the stack.
@@ -60,15 +60,15 @@ class ArrayStack(AbstractStack):
         Postcondition: the top item is removed from the stack."""
         if self.isEmpty():
             raise KeyError("The stack is empty")
-        oldItem = self.items[len(self) - 1]
-        self.size -= 1
+        oldItem = self._items[len(self) - 1]
+        self._size -= 1
         # Resize the array here if necessary
-        if len(self) <= len(self.items) // 4 and \
-           len(self.items) >= 2 * ArrayStack.DEFAULT_CAPACITY:
-            temp = Array(len(self.items) // 2)          
+        if len(self) <= len(self._items) // 4 and \
+           len(self._items) >= 2 * ArrayStack.DEFAULT_CAPACITY:
+            temp = Array(len(self._items) // 2)          
             for i in range(len(self)):     
-                temp [i] = self.items[i]  
-            self.items = temp             
+                temp [i] = self._items[i]  
+            self._items = temp             
         return oldItem
         
          

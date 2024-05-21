@@ -10,7 +10,7 @@ class AbstractCollection(object):
     def __init__(self, sourceCollection = None):
         """Sets the initial state of self, which includes the
         contents of sourceCollection, if it's present."""
-        self.size = 0
+        self._size = 0
         if sourceCollection:
             for item in sourceCollection:
                 self.add(item)
@@ -22,7 +22,7 @@ class AbstractCollection(object):
     
     def __len__(self):
         """Returns the number of items in self."""
-        return self.size
+        return self._size
 
     def __str__(self):
         """Returns the string representation of self."""
