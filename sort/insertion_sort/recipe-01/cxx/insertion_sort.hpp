@@ -3,8 +3,7 @@
 template <typename Container>
 void insertion_sort(Container& lyst) {
     int i = 1;
-    int n = lyst.size();
-    while (i < n) {
+    while (i < lyst.size()) {
         auto itemToInsert = lyst[i];
         int j = i - 1;
         while (j >= 0) {
