@@ -1,6 +1,6 @@
 CXX = g++
-CXXFLAGS = -g3 -Wall -Wextra
-LDFLAGS =
+CXXFLAGS = -g3 -Wall -Wextra -fsanitize=leak -fno-omit-frame-pointer
+LDFLAGS = -lasan
 LDLIBS =
 
 SOURCES = $(shell ls *.cpp)

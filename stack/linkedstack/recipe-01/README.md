@@ -2,7 +2,8 @@
 
 - [Python版本](python)
 - [C++ benchmark版本](benchmark-cxx)
-- [C++版本](cxx)
+- [C++ raw指针版本（有内存泄露）](cxx-raw-ptr-memory-leaks)
+- [C++ std::unique_ptr版本](cxx)
 
 ### 参考文档
 
