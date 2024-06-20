@@ -7,7 +7,7 @@ class ArrayStack {
 public:
     static constexpr size_t DEFAULT_CAPACITY = 10;
 
-    ArrayStack(): _items{std::make_unique<T[]>(DEFAULT_CAPACITY)}, _capacity{DEFAULT_CAPACITY} {
+    ArrayStack(): _items{std::make_unique<T[]>(DEFAULT_CAPACITY)}, _capacity{DEFAULT_CAPACITY}, _size{0} {
     }
 
     const T& peek() const {
