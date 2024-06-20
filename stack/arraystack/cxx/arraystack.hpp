@@ -31,7 +31,7 @@ public:
 
     void push(const T& item) {
         if (size() == _items.size()) {
-            extend();
+            expand();
         }
         _items[size()] = item;
         _size += 1;
@@ -39,7 +39,7 @@ public:
 
     void push(T&& item) {
         if (size() == _items.size()) {
-            extend();
+            expand();
         }
         _items[size()] = std::move(item);
         _size += 1;
@@ -67,7 +67,7 @@ public:
     }
 
 private:
-    void extend() {
+    void expand() {
         Array<T> temp(2*size());
         for (size_t i = 0; i < size(); i++) {
             temp[i] = std::move(_items[i]);
