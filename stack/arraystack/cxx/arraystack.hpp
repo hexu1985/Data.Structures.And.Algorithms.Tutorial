@@ -49,7 +49,7 @@ public:
         if (isEmpty()) {
             throw std::runtime_error("The stack is empty");
         }
-        auto oldItem = _items[size() - 1];
+        auto oldItem = std::move(_items[size() - 1]);
         _size -= 1;
         if ((size() <= _items.size()/4) &&
                 (_items.size() >= 2 * DEFAULT_CAPACITY)) {
