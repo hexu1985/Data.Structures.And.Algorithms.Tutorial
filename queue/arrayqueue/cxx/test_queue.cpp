@@ -1,26 +1,28 @@
-#include <queue>
+#include "arrayqueue.hpp"
 #include <iostream>
 
+template <typename T>
+using Queue = ArrayQueue<T>;
+
 void test_queue1() {
-    std::queue<int> myqueue;
+    Queue<int> myqueue;
     int sum (0);
 
-    for (int i=1;i<=10;i++) myqueue.push(i);
+    for (int i=1;i<=10;i++) myqueue.add(i);
 
-    while (!myqueue.empty())
+    while (!myqueue.isEmpty())
     {
-        sum += myqueue.front();
-        myqueue.pop();
+        sum += myqueue.pop();
     }
 
     std::cout << "total: " << sum << '\n';
 }
 
 void test_queue2() {
-    std::queue<int> myints;
+    Queue<int> myints;
     std::cout << "0. size: " << myints.size() << '\n';
 
-    for (int i=0; i<5; i++) myints.push(i);
+    for (int i=0; i<5; i++) myints.add(i);
     std::cout << "1. size: " << myints.size() << '\n';
 
     myints.pop();
