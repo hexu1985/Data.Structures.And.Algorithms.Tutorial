@@ -1,24 +1,26 @@
 import ply.lex as lex
 
+from tokens import Token
+
 class Scanner:
     # List of token names.   This is always required
     tokens = (
-       'INT',
+       'NUMBER',
        'PLUS',
        'MINUS',
-       'MUL',
-       'DIV',
+       'TIMES',
+       'DIVIDES',
     )
 
     # Regular expression rules for simple tokens
     t_PLUS    = r'\+'
     t_MINUS   = r'-'
-    t_MUL     = r'\*'
-    t_DIV     = r'/'
+    t_TIMES   = r'\*'
+    t_DIVIDES = r'/'
 
     # A regular expression rule with some action code
     # Note addition of self parameter since we're in a class
-    def t_INT(self,t):
+    def t_NUMBER(self,t):
         r'\d+'
         t.value = int(t.value)    
         return t
@@ -39,21 +41,34 @@ class Scanner:
     def __init__(self, sourceStr):
         self.lexer = lex.lex(module=self)
         self.lexer.input(sourceStr)
-        self.getFirstToken()
+        self.getNextToken()
 
-    def 
+    def hasNext(self):
+        return self.currentToken != None
 
-    # Test it output
-    def test(self):
-        while True:
-             tok = self.lexer.token()
-             if not tok: break
-             print(tok)
+    def next(self):
+        if not self.hasNext():
+            raise Exception("There are no more tokens")           
+        temp = self.currentToken
+        self.getNextToken()
+        return temp
+
+    def getNextToken(self):
+        tok = self.lexer.token()
+        if tok is None:
+            self.currentToken = None
+        else:
+            self.currentToken = Token(tok.value)
+
 
 def main():
-    # Build the lexer and try it out
-    scanner = Scanner("3 + 4")
-    scanner.test()
+    # A simple tester program
+    while True:
+        sourceStr = input("Enter an expression: ")
+        if sourceStr == "": break
+        scanner = Scanner(sourceStr)
+        while scanner.hasNext():
+            print(scanner.next())
 
 if __name__ == '__main__': 
     main()
