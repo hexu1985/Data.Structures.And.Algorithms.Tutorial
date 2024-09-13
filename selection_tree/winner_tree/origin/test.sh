@@ -1,0 +1,1 @@
+./completeWinnerTree < completeWinnerTree.input 
