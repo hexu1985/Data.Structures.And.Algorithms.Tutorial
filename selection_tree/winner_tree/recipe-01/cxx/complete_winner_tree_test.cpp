@@ -1,7 +1,7 @@
 // test winner tree class
 
 #include <iostream>
-#include "completeWinnerTree.hpp"
+#include "complete_winner_tree.hpp"
 #include "player.hpp"
 
 using namespace std;
@@ -25,8 +25,8 @@ int main()
         thePlayer[i].id = i;
     }
 
-    completeWinnerTree<player> *w = 
-        new completeWinnerTree<player>(thePlayer, n);
+    CompleteWinnerTree<player> *w = 
+        new CompleteWinnerTree<player>(thePlayer, n);
     cout << "The winner tree is" << endl;
     w->output();
 

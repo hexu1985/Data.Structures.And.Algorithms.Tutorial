@@ -4,13 +4,13 @@
 #include <vector>
 
 template<class T>
-class completeWinnerTree {
+class CompleteWinnerTree {
 public:
-    completeWinnerTree(T *thePlayer, int theNumberOfPlayers) {
+    CompleteWinnerTree(T *thePlayer, int theNumberOfPlayers) {
         initialize(thePlayer, theNumberOfPlayers);
     }
 
-    ~completeWinnerTree() {}
+    ~CompleteWinnerTree() {}
 
     void initialize(T*, int);
 
@@ -31,7 +31,7 @@ private:
 };
 
 template<class T>
-void completeWinnerTree<T>::initialize(T *thePlayer, int theNumberOfPlayers) {
+void CompleteWinnerTree<T>::initialize(T *thePlayer, int theNumberOfPlayers) {
     // Create winner tree for thePlayer[1:numberOfPlayers].
     int n = theNumberOfPlayers;
     if (n < 2)
@@ -66,7 +66,7 @@ void completeWinnerTree<T>::initialize(T *thePlayer, int theNumberOfPlayers) {
 }
 
 template<class T>
-void completeWinnerTree<T>::play(int p, int leftChild, int rightChild) {
+void CompleteWinnerTree<T>::play(int p, int leftChild, int rightChild) {
     // play matches beginning at tree[p]
     // leftChild is left child of p
     // rightChild is right child of p
@@ -85,7 +85,7 @@ void completeWinnerTree<T>::play(int p, int leftChild, int rightChild) {
 
 
 template<class T>
-void completeWinnerTree<T>::rePlay(int thePlayer) {
+void CompleteWinnerTree<T>::rePlay(int thePlayer) {
     // Replay matches for player thePlayer.
     int n = numberOfPlayers;
     if (thePlayer <= 0 || thePlayer > n)
@@ -138,7 +138,7 @@ void completeWinnerTree<T>::rePlay(int thePlayer) {
 }
 
 template<class T>
-void completeWinnerTree<T>::output() const {
+void CompleteWinnerTree<T>::output() const {
     std::cout << "number of players  = " << numberOfPlayers
         << " lowExt = " << lowExt
         << " offset = " << offset << std::endl;
