@@ -1,16 +1,16 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 template<class T>
 class completeWinnerTree {
 public:
     completeWinnerTree(T *thePlayer, int theNumberOfPlayers) {
-        tree = NULL;
         initialize(thePlayer, theNumberOfPlayers);
     }
 
-    ~completeWinnerTree() {delete [] tree;}
+    ~completeWinnerTree() {}
 
     void initialize(T*, int);
 
@@ -24,7 +24,7 @@ public:
 private:
     int lowExt;           // lowest-level external nodes
     int offset;           // 2^log(n-1) - 1
-    int *tree;            // array for winner tree
+    std::vector<int> tree;// array for winner tree
     int numberOfPlayers;
     T *player;            // array of players
     void play(int, int, int);
@@ -39,8 +39,7 @@ void completeWinnerTree<T>::initialize(T *thePlayer, int theNumberOfPlayers) {
 
     player = thePlayer;
     numberOfPlayers = n;
-    delete [] tree;
-    tree = new int [n];
+    tree.resize(n);
 
     // compute  s = 2^log (n-1)
     int i, s;
@@ -139,8 +138,7 @@ void completeWinnerTree<T>::rePlay(int thePlayer) {
 }
 
 template<class T>
-void completeWinnerTree<T>::output() const
-{
+void completeWinnerTree<T>::output() const {
     std::cout << "number of players  = " << numberOfPlayers
         << " lowExt = " << lowExt
         << " offset = " << offset << std::endl;
