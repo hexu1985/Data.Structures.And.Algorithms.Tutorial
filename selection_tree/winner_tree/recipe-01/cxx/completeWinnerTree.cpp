@@ -1,8 +1,8 @@
 // test winner tree class
 
 #include <iostream>
-#include "completeWinnerTree.h"
-#include "player.h"
+#include "completeWinnerTree.hpp"
+#include "player.hpp"
 
 using namespace std;
 

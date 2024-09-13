@@ -1,7 +1,5 @@
 // node type used by winner tree
-
-#ifndef player_
-#define player_
+#pragma once
 
 struct player
 {
@@ -10,4 +8,3 @@ struct player
    operator int () const {return key;}
 };
 
-#endif
