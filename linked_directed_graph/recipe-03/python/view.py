@@ -21,9 +21,10 @@ class GraphDemoView(object):
                "  3  View the current graph\n" \
                "  4  Single source shortest paths\n" \
                "  5  Topological sort\n" \
-               "  6  Exit the program\n"
+               "  6  Check is DAG\n" \
+               "  7  Exit the program\n"
         while True:
-            command = self._getCommand(6, menu)
+            command = self._getCommand(7, menu)
             if   command == 1: self._getFromKeyboard()
             elif command == 2: self._getFromFile()
             elif command == 3:
@@ -33,6 +34,8 @@ class GraphDemoView(object):
             elif command == 5:
                 print("Sort:", \
                       " ".join(map(str, self._model.run(topoSort))))
+            elif command == 6:
+                print("Is DAG? {}".format(not self._model.run(has
             else: break
 
     def _getCommand(self, high, menu):

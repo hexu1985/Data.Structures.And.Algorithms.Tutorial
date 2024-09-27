@@ -28,7 +28,7 @@ def shortestPaths(g, startLabel):
     return ["Under development"]
 
 
-def hasCycle(g):
+def hasCycle(g, startLabel = None):
     for v in g.vertices():
         v.setAttribute("visit_status", "unvisited")
 
@@ -44,7 +44,8 @@ def _hasCycleDfs(g, v):
     for w in g.neighboringVertices(v.getLabel()):
         visit_status = w.getAttribute("visit_status")
         if visit_status == "unvisited":
-            _hasCycleDfs(g, w)
+            if _hasCycleDfs(g, w):
+                return True
         elif visit_status == "visiting":
             return True
 
