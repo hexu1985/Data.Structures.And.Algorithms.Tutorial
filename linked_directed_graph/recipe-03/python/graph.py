@@ -62,6 +62,7 @@ class LinkedEdge:
                str(self._vertex2)   + ":" + \
                str(self._weight)
 
+
 class LinkedVertex:
 
     # A vertex has a label, a list of incident edges,
@@ -71,6 +72,7 @@ class LinkedVertex:
         self._label = label
         self._edgeList = list()
         self._mark = False
+        self._attribute = dict()
 
     def clearMark(self):
         """Clears the mark on the vertex."""
@@ -143,6 +145,15 @@ class LinkedVertex:
             return True
         else:
             return False
+
+    def setAttribute(self, name, value):
+        self._attribute[name] = value
+
+    def hasAttribute(self, name):
+        return name in self._attribute
+
+    def getAttribute(self, name):
+        return self._attribute[name]
 
 
 class LinkedDirectedGraph:
