@@ -1,16 +1,19 @@
+RM = rm -f
 CXX = g++
-CXXFLAGS = -g3 -Wall -Wextra -fsanitize=leak -fno-omit-frame-pointer
-LDFLAGS = -lasan
-LDLIBS =
+CXXFLAGS = -Wall -g #-std=c++11
+INCLUDES = -I$(HOME)/local/googletest/include
+LDFLAGS = -lgtest -lpthread
+LDPATH = -L$(HOME)/local/googletest/lib
+VPATH = 
 
 SOURCES = $(shell ls *.cpp)
-TARGETS = $(subst .cpp,,$(SOURCES))
-#TARGETS = $(SOURCES:%.cpp=%)
+PROGS = test_stack
 
-all: $(TARGETS)
-	@echo "TARGETS = $(TARGETS)" 
+all: $(PROGS)
+	@echo "PROGS = $(PROGS)" 
 
-.PHONY:
 clean:
-	$(RM) $(TARGETS) a.out core *.o
-	@echo "clean OK!"
+	$(RM) $(PROGS)
+
+$(PROGS): $(SOURCES) $(LIB_SOURCES)
+	$(CXX) -o $@ $(CXXFLAGS) $(INCLUDES) $^ $(LDFLAGS) $(LDPATH)

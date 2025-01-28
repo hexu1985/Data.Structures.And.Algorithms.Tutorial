@@ -1,6 +1,7 @@
 #pragma once
 
 #include "arrays.hpp"
+#include <stdexcept>
 
 template <typename T>
 class ArrayStack {
