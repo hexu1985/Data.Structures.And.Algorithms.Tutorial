@@ -1,75 +1,55 @@
-#include <stack>
+#include <gtest/gtest.h>
 #include <iostream>
+#include <stack>
 
-void test_stack1() {
-    std::stack<int> mystack;
-    int sum (0);
-
-    for (int i=1;i<=10;i++) mystack.push(i);
-
-    while (!mystack.empty())
+class TestStackMethods: public testing::Test {
+protected:
+    virtual void SetUp()
     {
-        sum += mystack.top();
-        mystack.pop();
+//        std::cout << "TestStackMethods SetUp" << std::endl;
     }
 
-    std::cout << "total: " << sum << '\n';
-}
-
-void test_stack2() {
-    std::stack<int> myints;
-    std::cout << "0. size: " << myints.size() << '\n';
-
-    for (int i=0; i<5; i++) myints.push(i);
-    std::cout << "1. size: " << myints.size() << '\n';
-
-    myints.pop();
-    std::cout << "2. size: " << myints.size() << '\n';
-}
-
-void test_stack3() {
-    auto reportStackSize = 
-        [](const std::stack<int>& s) {
-            std::cout << s.size() << " elements on stack\n";
-        };
-
-    auto reportStackTop =
-        [](const std::stack<int>& s) {
-            std::cout << "Top element: " << s.top() << '\n';
-        };
-
-    std::stack<int> s;
-    s.push(2);
-    s.push(6);
-    s.push(51);
-
-    reportStackSize(s);
-    reportStackTop(s);
-
-    reportStackSize(s);
-    s.pop();
-
-    reportStackSize(s);
-    reportStackTop(s);
-}
-
-void test_stack4() {
-    std::stack<int> mystack;
-
-    for (int i=0; i<5; ++i) mystack.push(i);
-
-    std::cout << "Popping out elements...";
-    while (!mystack.empty())
+    virtual void TearDown()
     {
-        std::cout << ' ' << mystack.top();
-        mystack.pop();
+//        std::cout << "TestStackMethods TearDown" << std::endl;
     }
-    std::cout << '\n';
+
+    std::stack<int> stack;
+};
+
+TEST_F(TestStackMethods, test_is_empty) {
+    EXPECT_TRUE(stack.empty());
+    stack.push(42);
+    EXPECT_FALSE(stack.empty());
 }
 
-int main() {
-    test_stack1();
-    test_stack2();
-    test_stack3();
-    test_stack4();
+TEST_F(TestStackMethods, test_size) {
+    EXPECT_EQ(stack.size(), 0);
+    stack.push(42);
+    EXPECT_EQ(stack.size(), 1);
 }
+
+TEST_F(TestStackMethods, test_push) {
+    stack.push(42);
+    EXPECT_EQ(stack.size(), 1);
+}
+
+TEST_F(TestStackMethods, test_pop) {
+    stack.push(42);
+    EXPECT_EQ(stack.top(), 42);
+    stack.pop();
+    EXPECT_TRUE(stack.empty());
+}
+
+TEST_F(TestStackMethods, test_peek) {
+    stack.push(42);
+    EXPECT_EQ(stack.top(), 42);
+    EXPECT_EQ(stack.size(), 1);
+}
+
+int main(int argc, char* argv[])
+{
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+
