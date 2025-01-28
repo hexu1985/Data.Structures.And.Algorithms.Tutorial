@@ -70,9 +70,4 @@ class ArrayStack(AbstractStack):
                 temp [i] = self._items[i]  
             self._items = temp             
         return oldItem
-        
-    def size(self):
-        return len(self)
 
-    def is_empty(self):
-        return self.isEmpty()
