@@ -7,7 +7,7 @@ class Stack {
 public:
     Stack() = default;
 
-    bool is_empty() {
+    bool is_empty() const {
         return _items.empty();
     }
 
