@@ -1,35 +1,51 @@
-#include "arrayqueue.hpp"
+#include <gtest/gtest.h>
 #include <iostream>
+#include "arrayqueue.hpp"
 
 template <typename T>
 using Queue = ArrayQueue<T>;
 
-void test_queue1() {
-    Queue<int> myqueue;
-    int sum (0);
-
-    for (int i=1;i<=10;i++) myqueue.add(i);
-
-    while (!myqueue.isEmpty())
+class TestQueueMethods: public testing::Test {
+protected:
+    virtual void SetUp()
     {
-        sum += myqueue.pop();
+//        std::cout << "TestQueueMethods SetUp" << std::endl;
     }
 
-    std::cout << "total: " << sum << '\n';
+    virtual void TearDown()
+    {
+//        std::cout << "TestQueueMethods TearDown" << std::endl;
+    }
+
+    Queue<int> queue;
+};
+
+TEST_F(TestQueueMethods, test_is_empty) {
+    EXPECT_TRUE(queue.isEmpty());
+    queue.add(42);
+    EXPECT_FALSE(queue.isEmpty());
 }
 
-void test_queue2() {
-    Queue<int> myints;
-    std::cout << "0. size: " << myints.size() << '\n';
-
-    for (int i=0; i<5; i++) myints.add(i);
-    std::cout << "1. size: " << myints.size() << '\n';
-
-    myints.pop();
-    std::cout << "2. size: " << myints.size() << '\n';
+TEST_F(TestQueueMethods, test_size) {
+    EXPECT_EQ(queue.size(), 0);
+    queue.add(42);
+    EXPECT_EQ(queue.size(), 1);
 }
 
-int main() {
-    test_queue1();
-    test_queue2();
+TEST_F(TestQueueMethods, test_enqueue) {
+    queue.add(42);
+    EXPECT_EQ(queue.size(), 1);
 }
+
+TEST_F(TestQueueMethods, test_dequeue) {
+    queue.add(42);
+    EXPECT_EQ(queue.pop(), 42);
+    EXPECT_TRUE(queue.isEmpty());
+}
+
+int main(int argc, char* argv[])
+{
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+
