@@ -1,6 +1,6 @@
 ### 栈数据结构
 
-- [数组实现栈](arraystack)
-- [链表实现栈](linkedstack)
-- [栈适配器](adapter)
+- [数组实现栈](recipe-01)
+- [链表实现栈](recipe-02)
+- [栈适配器](recipe-03)
 

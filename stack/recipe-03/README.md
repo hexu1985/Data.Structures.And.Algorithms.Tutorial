@@ -1,4 +1,4 @@
-### 栈数据结构
+### 栈数据结构 - 适配器实现
 
 - [Python版本](python)
 - [C++ std::stack版本](cxx-std-stack)

@@ -1,4 +1,4 @@
-### 栈数据结构
+### 栈数据结构 - 基于链表实现
 
 - [Python版本](python)
 - [C++ raw指针版本（有内存泄露）](cxx-raw-ptr-memory-leaks)
