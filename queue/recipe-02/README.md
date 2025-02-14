@@ -3,6 +3,7 @@
 - [Python版本](python)
 - [C++ std::queue版本](cxx-std-queue)
 - [C++ std::list版本](cxx-adapt-list)
+- [C++ std::deque版本](cxx-adapt-deque)
 
 ### 参考文档
 

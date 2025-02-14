@@ -1,6 +1,6 @@
 #pragma once
 
-#include <list>
+#include <deque>
 
 template <typename T>
 class Queue {
@@ -26,5 +26,5 @@ public:
     }
 
 private:
-    std::list<T> _items;
+    std::deque<T> _items;
 };

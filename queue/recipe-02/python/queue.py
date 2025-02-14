@@ -1,34 +1,17 @@
-#!/usr/bin/env python3
-"""
-Bradley N. Miller, David L. Ranum
-Problem Solving with Algorithms and Data Structures using Python
-Copyright 2005
-Updated by Roman Yasinovskyy, 2017
-"""
-
-
-from typing import Any
-
+from collections import deque
 
 class Queue:
-    """Queue implementation using a list"""
+    def __init__(self):
+        self.items = deque()
 
-    def __init__(self) -> None:
-        """Create new queue"""
-        self._items: list[Any] = []
+    def isEmpty(self):
+        return len(self.items) == 0
 
-    def is_empty(self) -> bool:
-        """Check if the queue is empty"""
-        return not bool(self._items)
+    def enqueue(self, item):
+        self.items.append(item)
 
-    def enqueue(self, item: Any) -> None:
-        """Add an item to the queue"""
-        self._items.insert(0, item)
+    def dequeue(self):
+        return self.items.popleft()
 
-    def dequeue(self) -> Any:
-        """Remove an item from the queue"""
-        return self._items.pop()
-
-    def size(self) -> int:
-        """Get the number of items in the queue"""
-        return len(self._items)
+    def size(self):
+        return len(self.items)

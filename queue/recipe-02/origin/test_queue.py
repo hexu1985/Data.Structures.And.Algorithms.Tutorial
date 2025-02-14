@@ -24,9 +24,9 @@ class TestQueueMethods:
 
     def test_is_empty(self):
         """Testing is_empty() method"""
-        assert self.queue.isEmpty()
+        assert self.queue.is_empty()
         self.queue.enqueue(42)
-        assert not self.queue.isEmpty()
+        assert not self.queue.is_empty()
 
     def test_size(self):
         """Testing size() method"""
@@ -43,7 +43,7 @@ class TestQueueMethods:
         """Testing dequeue() method"""
         self.queue.enqueue(42)
         assert self.queue.dequeue() == 42
-        assert self.queue.isEmpty()
+        assert self.queue.is_empty()
 
 
 if __name__ == "__main__":
