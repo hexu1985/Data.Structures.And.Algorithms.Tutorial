@@ -18,9 +18,9 @@ protected:
 };
 
 TEST_F(TestStackMethods, test_is_empty) {
-    EXPECT_TRUE(stack.is_empty());
+    EXPECT_TRUE(stack.isEmpty());
     stack.push(42);
-    EXPECT_FALSE(stack.is_empty());
+    EXPECT_FALSE(stack.isEmpty());
 }
 
 TEST_F(TestStackMethods, test_size) {
@@ -37,7 +37,7 @@ TEST_F(TestStackMethods, test_push) {
 TEST_F(TestStackMethods, test_pop) {
     stack.push(42);
     EXPECT_EQ(stack.pop(), 42);
-    EXPECT_TRUE(stack.is_empty());
+    EXPECT_TRUE(stack.isEmpty());
 }
 
 TEST_F(TestStackMethods, test_peek) {
