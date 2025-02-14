@@ -24,9 +24,9 @@ class TestStackMethods:
 
     def test_is_empty(self):
         """Testing is_empty() method"""
-        assert self.stack.isEmpty()
+        assert self.stack.is_empty()
         self.stack.push(42)
-        assert not self.stack.isEmpty()
+        assert not self.stack.is_empty()
 
     def test_size(self):
         """Testing size() method"""
@@ -43,7 +43,7 @@ class TestStackMethods:
         """Testing pop() method"""
         self.stack.push(42)
         assert self.stack.pop() == 42
-        assert self.stack.isEmpty()
+        assert self.stack.is_empty()
 
     def test_peek(self):
         """Testing peek() method"""
