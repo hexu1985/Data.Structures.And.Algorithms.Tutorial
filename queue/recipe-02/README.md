@@ -1,4 +1,4 @@
-### 队列数据结构
+### 队列数据结构 - 适配器实现
 
 - [Python版本](python)
 - [C++ std::queue版本](cxx-std-queue)
