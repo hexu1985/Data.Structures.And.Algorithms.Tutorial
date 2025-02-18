@@ -1,16 +1,25 @@
 CXX = g++
 CXXFLAGS = -g3 -Wall -Wextra
-LDFLAGS =
-LDLIBS =
+INCLUDES = -I$(HOME)/local/googletest/include
+LDFLAGS = -lgtest -lpthread
+LDPATH = -L$(HOME)/local/googletest/lib
 
-SOURCES = $(shell ls *.cpp)
-TARGETS = $(subst .cpp,,$(SOURCES))
-#TARGETS = $(SOURCES:%.cpp=%)
+PROGS =	sample_bubble_sort sample_bubble_sort_with_tweak test_bubble_sort
 
-all: $(TARGETS)
-	@echo "TARGETS = $(TARGETS)" 
+.PHONY: all
+all: $(PROGS)
+	@echo "build OK!"
 
-.PHONY:
 clean:
-	$(RM) $(TARGETS) a.out core *.o
+	@$(RM) $(PROGS) *.o
 	@echo "clean OK!"
+
+sample_bubble_sort: sample_bubble_sort.cpp
+	$(CXX) -o $@ $(CXXFLAGS) $^ 
+
+sample_bubble_sort_with_tweak: sample_bubble_sort_with_tweak.cpp 
+	$(CXX) -o $@ $(CXXFLAGS) $^ 
+
+test_bubble_sort: test_bubble_sort.cpp random.cpp
+	$(CXX) -o $@ $(CXXFLAGS) $(INCLUDES) $^ $(LDFLAGS) $(LDPATH)
+
