@@ -1,12 +1,19 @@
-from typing import Any
+#!/usr/bin/env python3
 
-def bubble_sort(lst: list[Any]) -> None:
-    """Bubble sort"""
-    for i in range(len(lst) - 1, 0, -1):
+def bubble_sort(a_list):
+    for i in range(len(a_list) - 1, 0, -1):
+        for j in range(i):
+            if a_list[j] > a_list[j + 1]:
+                temp = a_list[j]
+                a_list[j] = a_list[j + 1]
+                a_list[j + 1] = temp
+
+def bubble_sort_short(a_list):
+    for i in range(len(a_list) - 1, 0, -1):
         exchanges = False
         for j in range(i):
-            if lst[j] > lst[j + 1]:
+            if a_list[j] > a_list[j + 1]:
                 exchanges = True
-                lst[j], lst[j + 1] = lst[j + 1], lst[j]
+                a_list[j], a_list[j + 1] = a_list[j + 1], a_list[j]
         if not exchanges:
-            break
+            break                

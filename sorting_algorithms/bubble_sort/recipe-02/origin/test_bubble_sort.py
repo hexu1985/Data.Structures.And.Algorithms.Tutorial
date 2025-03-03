@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import pytest
 from random import randint
-from bubble_sort import bubble_sort
+from bubble_sort import bubble_sort, bubble_sort_short
 
 
 class TestSortingMethods:
@@ -32,6 +32,10 @@ class TestSortingMethods:
         bubble_sort(self.lst_to_sort)
         assert self.lst_to_sort == self.test_lst
 
+    def test_short_bubble_sort(self):
+        """Testing ShortBubbleSort"""
+        bubble_sort_short(self.lst_to_sort)
+        assert self.lst_to_sort == self.test_lst
 
 if __name__ == "__main__":
     pytest.main(["test_bubble_sort.py"])
