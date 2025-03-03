@@ -33,5 +33,5 @@ class TestSortingMethods:
         assert self.lst_to_sort == self.test_lst
 
 if __name__ == "__main__":
-    pytest.main(["test_insert_sort.py"])
+    pytest.main(["test_insertion_sort.py"])
 
